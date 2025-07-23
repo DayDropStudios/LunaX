@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LunaX - Unblocked Games Portal</title>
+    <style>
+        @font-face {
+            font-family: 'InterMush';
+            src: url('https://fonts.cdnfonts.com/css/inter-mush') format('woff2');
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Walaweh';
+            src: url('https://fonts.cdnfonts.com/css/walaweh') format('woff2');
+            font-display: swap;
+        }
+
+        @import url('https://fonts.cdnfonts.com/css/inter-mush');
+        @import url('https://fonts.cdnfonts.com/css/walaweh');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Walaweh', Arial, sans-serif;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a, #000000, #333333, #1a1a1a, #2a2a2a);
+            background-size: 400% 400%;
+            animation: greyGradientShift 15s ease infinite;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        @keyframes greyGradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.08;
+        }
+
+        .header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            z-index: 10;
+            animation: slideDown 1.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            font-family: 'Inter', 'InterMush', Arial, sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #f0f0f0, #e0e0e0, #cccccc, #ffffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 4s ease infinite, logoFloat 6s ease-in-out infinite, bubbleGlow 3s ease-in-out infinite;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+            position: relative;
+            letter-spacing: -2px;
+            /* Bubble font effect */
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+            text-transform: uppercase;
+        }
+
+        @keyframes gradientText {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-15px) scale(1.02); }
+        }
+
+        @keyframes bubbleGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.2)); 
+            }
+            50% { 
+                filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)); 
+            }
+        }
+
+        .logo::before {
+            content: 'LunaX';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: linear-gradient(45deg, #666666, #333333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: bubbleShadow 4s infinite;
+            z-index: -1;
+            filter: blur(1px);
+        }
+
+        @keyframes bubbleShadow {
+            0%, 90%, 100% { transform: translate(0, 0); }
+            92% { transform: translate(1px, -1px); }
+            94% { transform: translate(-1px, 1px); }
+            96% { transform: translate(1px, 1px); }
+            98% { transform: translate(-1px, -1px); }
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            animation: slideUp 1.5s ease-out 0.5s both;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffffff, #f5f5f5, #e8e8e8);
+            border: 2px solid transparent;
+            padding: 1.2rem 2.5rem;
+            color: #000000;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            animation: buttonFloat 4s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:nth-child(even) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes buttonFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7, #9333ea);
+            color: #ffffff;
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
+            border-color: #ffffff;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: left 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            animation: fadeIn 2s ease-out 1s both;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05), rgba(0, 0, 0, 0.3));
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            animation: cardSlideIn 0.8s ease-out both;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card:nth-child(odd) {
+            animation-delay: 0.2s;
+        }
+
+        .game-card:nth-child(even) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes cardSlideIn {
+            0% { transform: translateX(-50px) rotateY(-15deg); opacity: 0; }
+            100% { transform: translateX(0) rotateY(0deg); opacity: 1; }
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: cardRotate 8s linear infinite;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes cardRotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .game-card:hover {
+            transform: translateY(-15px) scale(1.05) rotateX(5deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(200, 200, 200, 0.1), rgba(0, 0, 0, 0.2));
+        }
+
+        .game-title {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ffffff, #f0f0f0, #e0e0e0, #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 3s ease infinite;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .game-description {
+            font-family: 'Walaweh', Arial, sans-serif;
+            color: #e0e0e0;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .play-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, #000000, #333333, #1a1a1a);
+            border: 2px solid #ffffff;
+            padding: 1rem 2rem;
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            width: 100%;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-btn:hover {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7, #9333ea);
+            transform: scale(1.08);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+            border-color: #ffffff;
+        }
+
+        .play-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.6s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .play-btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: complexFloat 8s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #666666, #333333);
+            top: 70%;
+            left: 85%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7);
+            top: 40%;
+            left: 75%;
+            animation-delay: 4s;
+        }
+
+        .floating-shape:nth-child(4) {
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, #ffffff, #e0e0e0);
+            top: 25%;
+            left: 60%;
+            animation-delay: 1s;
+        }
+
+        .floating-shape:nth-child(5) {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(45deg, #444444, #8b5cf6);
+            top: 80%;
+            left: 20%;
+            animation-delay: 3s;
+        }
+
+        @keyframes complexFloat {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); 
+                opacity: 0.7;
+            }
+            25% { 
+                transform: translateY(-30px) translateX(20px) rotate(90deg) scale(1.2); 
+                opacity: 1;
+            }
+            50% { 
+                transform: translateY(-20px) translateX(-15px) rotate(180deg) scale(0.8); 
+                opacity: 0.5;
+            }
+            75% { 
+                transform: translateY(-40px) translateX(10px) rotate(270deg) scale(1.1); 
+                opacity: 0.9;
+            }
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 3rem 0;
+            animation: searchSlide 1.5s ease-out 1.5s both;
+        }
+
+        @keyframes searchSlide {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .search-box {
+            font-family: 'Walaweh', Arial, sans-serif;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.3));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 1.2rem 2.5rem;
+            color: #ffffff;
+            font-size: 1.1rem;
+            width: 350px;
+            max-width: 90%;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+            transform: scale(1.05);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(0, 0, 0, 0.4));
+        }
+
+        .search-box::placeholder {
+            color: #cccccc;
+        }
+
+        .footer {
+            font-family: 'Walaweh', Arial, sans-serif;
+            text-align: center;
+            padding: 3rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(100, 100, 100, 0.1));
+            color: #e0e0e0;
+            animation: footerSlide 1.5s ease-out 2s both;
+        }
+
+        @keyframes footerSlide {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .glitch {
+            animation: advancedGlitch 3s infinite;
+        }
+
+        @keyframes advancedGlitch {
+            0%, 96%, 100% { transform: translate(0); }
+            97% { transform: translate(-2px, 2px) skew(2deg); }
+            98% { transform: translate(2px, -2px) skew(-2deg); }
+            99% { transform: translate(-2px, -2px) skew(1deg); }
+        }
+
+        /* Particle system */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 4s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-100px) translateX(100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 4rem; }
+            .nav-btn { padding: 1rem 1.8rem; font-size: 0.9rem; }
+            .games-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .search-box { width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    
+    <div class="floating-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <header class="header">
+        <h1 class="logo glitch">LunaX</h1>
+    </header>
+
+    <nav class="nav-container">
+        <button class="nav-btn" onclick="showSection('games')">Games</button>
+        <button class="nav-btn" onclick="showSection('favorites')">Favorites</button>
+        <button class="nav-btn" onclick="showSection('new')">New Games</button>
+        <button class="nav-btn" onclick="showSection('about')">About</button>
+    </nav>
+
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search games..." id="searchBox" onkeyup="searchGames()">
+        </div>
+
+        <div id="gamesSection" class="games-grid">
+            <div class="game-card" data-game="snake">
+                <h3 class="game-title">Snake 2000</h3>
+                <p class="game-description">Classic snake game with modern graphics. Navigate through the digital maze and grow your serpent while avoiding obstacles.</p>
+                <button class="play-btn" onclick="playGame('snake')">Play Now</button>
+            </div>
+
+            <div class="game-card" data-game="tetris">
+                <h3 class="game-title">Cyber Tetris</h3>
+                <p class="game-description">Futuristic block-stacking action with smooth animations. Test your spatial skills in this timeless puzzle challenge.</p>
+                <button class="play-btn" onclick="playGame('tetris')">Play Now</button>
+            </div>
+
+            <div class="game-card" data-game="pong">
+                <h3 class="game-title">Neon Pong</h3>
+                <p class="game-description">Retro-futuristic ping pong with enhanced physics. Battle against AI or challenge your friends in this classic arcade game.</p>
+                <button class="play-btn" onclick="playGame('pong')">Play Now</button>
+            </div>
+
+            <div class="game-card" data-game="breakout">
+                <h3 class="game-title">Matrix Breakout</h3>
+                <p class="game-description">Break through digital barriers in this enhanced brick-breaking adventure. Power-ups and special effects included.</p>
+                <button class="play-btn" onclick="playGame('breakout')">Play Now</button>
+            </div>
+
+            <div class="game-card" data-game="space">
+                <h3 class="game-title">Space Invaders 2K</h3>
+                <p class="game-description">Defend Earth from alien invasion in this millennium edition space shooter. Multiple weapons and boss battles await.</p>
+                <button class="play-btn" onclick="playGame('space')">Play Now</button>
+            </div>
+
+            <div class="game-card" data-game="puzzle">
+                <h3 class="game-title">Digital Puzzle</h3>
+                <p class="game-description">Mind-bending puzzles with progressive difficulty. Challenge your logic and problem-solving skills in this brain teaser.</p>
+                <button class="play-btn" onclick="playGame('puzzle')">Play Now</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 LunaX Gaming Portal | Powered by Advanced Gaming Technology</p>
+    </footer>
+
+    <script>
+        // Enhanced Matrix background effect with grey theme
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = "LUNAX01GAMES10PORTAL01";
+        const matrixArray = matrix.split("");
+
+        const fontSize = 12;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for(let x = 0; x < columns; x++) {
+            drops[x] = Math.random() * -100;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Create gradient for matrix text - grey theme
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+            gradient.addColorStop(0.5, 'rgba(200, 200, 200, 0.4)');
+            gradient.addColorStop(1, 'rgba(100, 100, 100, 0.2)');
+            
+            ctx.fillStyle = gradient;
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        // Particle system with white particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.background = Math.random() > 0.7 ? '#8b5cf6' : '#ffffff';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 4000);
+        }
+
+        setInterval(createParticle, 2000);
+
+        // Enhanced game functions
+        function playGame(gameName) {
+            // Create enhanced glitch effect
+            document.body.style.animation = 'advancedGlitch 0.8s';
+            
+            // Add screen flash effect
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.width = '100%';
+            flash.style.height = '100%';
+            flash.style.background = 'rgba(255, 255, 255, 0.2)';
+            flash.style.zIndex = '10000';
+            flash.style.animation = 'flash 0.5s ease-out';
+            document.body.appendChild(flash);
+            
+            setTimeout(() => {
+                flash.remove();
+                alert(`🎮 Loading ${gameName}... \n\n✨ Enhanced Gaming Experience! \n\nThis is a demo - integrate actual games here!`);
+                document.body.style.animation = '';
+            }, 800);
+        }
+
+        // Add flash animation
+        const flashStyle = document.createElement('style');
+        flashStyle.textContent = `
+            @keyframes flash {
+                0% { opacity: 0; }
+                50% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(flashStyle);
+
+        function showSection(section) {
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.style.transform = 'scale(1)';
+                btn.style.background = 'linear-gradient(135deg, #ffffff, #f5f5f5, #e8e8e8)';
+                btn.style.color = '#000000';
+            });
+            
+            event.target.style.transform = 'scale(1.15)';
+            event.target.style.background = 'linear-gradient(135deg, #8b5cf6, #a855f7, #9333ea)';
+            event.target.style.color = '#ffffff';
+            
+            console.log(`🚀 Switching to ${section} section`);
+        }
+
+        function searchGames() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            gameCards.forEach((card, index) => {
+                const title = card.querySelector('.game-title').textContent.toLowerCase();
+                const description = card.querySelector('.game-description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    card.style.animation = `cardSlideIn 0.8s ease-out ${index * 0.1}s both`;
+                } else {
+                    card.style.display = searchTerm === '' ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Enhanced cursor trail effect
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.style.position = 'fixed';
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            trail.style.width = '8px';
+            trail.style.height = '8px';
+            trail.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent)';
+            trail.style.borderRadius = '50%';
+            trail.style.pointerEvents = 'none';
+            trail.style.zIndex = '9999';
+            trail.style.animation = 'trailFade 1.5s ease-out forwards';
+            
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                trail.remove();
+            }, 1500);
+        });
+
+        // Add trail fade animation
+        const trailStyle = document.createElement('style');
+        trailStyle.textContent = `
+            @keyframes trailFade {
+                0% { 
+                    opacity: 1; 
+                    transform: scale(1); 
+                }
+                100% { 
+                    opacity: 0; 
+                    transform: scale(0.2); 
+                }
+            }
+        `;
+        document.head.appendChild(trailStyle);
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Enhanced welcome message
+        setTimeout(() => {
+            console.log(`
+    ██╗     ██╗   ██╗███╗   ██╗ █████╗ ██╗  ██╗
+    ██║     ██║   ██║████╗  ██║██╔══██╗╚██╗██╔╝
+    ██║     ██║   ██║██╔██╗ ██║███████║ ╚███╔╝ 
+    ██║     ██║   ██║██║╚██╗██║██╔══██║ ██╔██╗ 
+    ███████╗╚██████╔╝██║ ╚████║██║  ██║██╔╝ ██╗
+    ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝
+    
+    🎮 Welcome to LunaX - Premium Gaming Portal! 🎮
+    ✨ Featuring sleek grey gradients and bubble fonts ✨
+    🚀 Built with modern web technology 🚀
+    `);
+        }, 2000);
+
+        // Add scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'cardSlideIn 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all game cards
+        document.querySelectorAll('.game-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchBox').focus();
+                document.getElementById('searchBox').style.animation = 'searchPulse 0.5s ease-out';
+            }
+        });
+
+        // Add search pulse animation
+        const searchPulseStyle = document.createElement('style');
+        searchPulseStyle.textContent = `
+            @keyframes searchPulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(searchPulseStyle);
+
+        // Add dynamic background color changes based on time
+        function updateBackgroundByTime() {
+            const hour = new Date().getHours();
+            let gradient;
+            
+            if (hour >= 6 && hour < 12) {
+                // Morning - lighter greys
+                gradient = 'linear-gradient(135deg, #3a3a3a, #2a2a2a, #1a1a1a, #333333, #2a2a2a, #3a3a3a)';
+            } else if (hour >= 12 && hour < 18) {
+                // Afternoon - balanced greys
+                gradient = 'linear-gradient(135deg, #2a2a2a, #1a1a1a, #000000, #333333, #1a1a1a, #2a2a2a)';
+            } else {
+                // Evening/Night - deeper greys and blacks
+                gradient = 'linear-gradient(135deg, #1a1a1a, #0a0a0a, #000000, #222222, #0a0a0a, #1a1a1a)';
+            }
+            
+            document.body.style.background = gradient;
+            document.body.style.backgroundSize = '400% 400%';
+        }
+
+        updateBackgroundByTime();
+        setInterval(updateBackgroundByTime, 3600000); // Update every hour
+
+        // Add loading screen effect on page load
+        window.addEventListener('load', () => {
+            const loader = document.createElement('div');
+            loader.style.position = 'fixed';
+            loader.style.top = '0';
+            loader.style.left = '0';
+            loader.style.width = '100%';
+            loader.style.height = '100%';
+            loader.style.background = 'linear-gradient(135deg, #000000, #2a2a2a, #1a1a1a)';
+            loader.style.backgroundSize = '400% 400%';
+            loader.style.animation = 'greyGradientShift 3s ease infinite';
+            loader.style.zIndex = '99999';
+            loader.style.display = 'flex';
+            loader.style.alignItems = 'center';
+            loader.style.justifyContent = 'center';
+            loader.style.flexDirection = 'column';
+            loader.innerHTML = `
+                <div style="font-family: 'Inter', Arial, sans-serif; font-size: 4rem; font-weight: 900; color: #ffffff; margin-bottom: 2rem; animation: bubbleGlow 2s ease-in-out infinite; filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));">LunaX</div>
+                <div style="width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden;">
+                    <div style="width: 0%; height: 100%; background: linear-gradient(90deg, #ffffff, #cccccc); border-radius: 2px; animation: loadingBar 3s ease-out forwards;"></div>
+                </div>
+            `;
+            document.body.appendChild(loader);
+
+            // Add loading bar animation
+            const loadingStyle = document.createElement('style');
+            loadingStyle.textContent = `
+                @keyframes loadingBar {
+                    0% { width: 0%; }
+                    100% { width: 100%; }
+                }
+            `;
+            document.head.appendChild(loadingStyle);
+
+            setTimeout(() => {
+                loader.style.animation = 'fadeOut 1s ease-out forwards';
+                setTimeout(() => {
+                    loader.remove();
+                }, 1000);
+            }, 3000);
+        });
+
+        // Add fade out animation for loader
+        const fadeOutStyle = document.createElement('style');
+        fadeOutStyle.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(fadeOutStyle);
+
+        // Add sound effect simulation (visual feedback)
+        function createSoundWave(x, y) {
+            const wave = document.createElement('div');
+            wave.style.position = 'fixed';
+            wave.style.left = x + 'px';
+            wave.style.top = y + 'px';
+            wave.style.width = '20px';
+            wave.style.height = '20px';
+            wave.style.border = '2px solid rgba(255, 255, 255, 0.6)';
+            wave.style.borderRadius = '50%';
+            wave.style.pointerEvents = 'none';
+            wave.style.zIndex = '9998';
+            wave.style.animation = 'soundWave 1s ease-out forwards';
+            document.body.appendChild(wave);
+
+            setTimeout(() => {
+                wave.remove();
+            }, 1000);
+        }
+
+        // Add sound wave animation
+        const soundWaveStyle = document.createElement('style');
+        soundWaveStyle.textContent = `
+            @keyframes soundWave {
+                0% { 
+                    transform: scale(1); 
+                    opacity: 1; 
+                }
+                100% { 
+                    transform: scale(4); 
+                    opacity: 0; 
+                }
+            }
+        `;
+        document.head.appendChild(soundWaveStyle);
+
+        // Add sound wave effect to buttons
+        document.querySelectorAll('.nav-btn, .play-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                createSoundWave(e.clientX, e.clientY);
+            });
+        });
+
+        // Add easter egg - Konami code
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.code);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+                // Easter egg activated!
+                document.body.style.animation = 'rainbow 2s ease-in-out infinite';
+                setTimeout(() => {
+                    document.body.style.animation = 'greyGradientShift 15s ease infinite';
+                    alert('🎉 Easter Egg Activated! 🎉\nYou found the secret Konami code!\n✨ LunaX Developer Mode Unlocked! ✨');
+                }, 4000);
+            }
+        });
+
+        // Add rainbow animation for easter egg
+        const rainbowStyle = document.createElement('style');
+        rainbowStyle.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(rainbowStyle);
+
+        // Performance optimization - pause animations when tab is not visible
+        document.addEventListener('visibilitychange', () => {
+            const animations = document.querySelectorAll('*');
+            if (document.hidden) {
+                animations.forEach(el => {
+                    el.style.animationPlayState = 'paused';
+                });
+            } else {
+                animations.forEach(el => {
+                    el.style.animationPlayState = 'running';
+                });
+            }
+        });
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add logo click animation
+        document.querySelector('.logo').addEventListener('click', () => {
+            const logo = document.querySelector('.logo');
+            logo.style.animation = 'none';
+            setTimeout(() => {
+                logo.style.animation = 'gradientText 4s ease infinite, logoFloat 6s ease-in-out infinite, bubbleGlow 3s ease-in-out infinite';
+            }, 10);
+        });
+
+    </script>
+</body>
+</html>
