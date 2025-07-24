@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
         * {
             margin: 0;
@@ -16,7 +17,7 @@
 
         body {
             font-family: 'Inter', Arial, sans-serif;
-            font-weight: 400;
+            font-weight: 700;
             color: #ffffff;
             overflow-x: hidden;
             min-height: 100vh;
@@ -40,7 +41,11 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
-            opacity: 0.15; /* Increased from 0.05 to 0.15 for better visibility */
+            opacity: 0.15;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         .sidebar {
@@ -118,8 +123,13 @@
             padding: 3rem 2rem 2rem;
             position: relative;
             z-index: 10;
-            margin-left: 60px;
+            width: 100%;
+            margin-left: 0;
+            padding-left: 60px;
             animation: fadeInDown 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         @keyframes fadeInDown {
@@ -168,8 +178,14 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
-            margin-left: 60px;
+            margin-left: auto;
+            margin-right: auto;
             animation: fadeIn 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: calc(100% - 60px);
+            padding-left: 60px;
         }
 
         @keyframes fadeIn {
@@ -186,6 +202,10 @@
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
+            width: 100%;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .game-card {
@@ -199,6 +219,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             animation: cardAppear 0.6s ease both;
             opacity: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .game-card:nth-child(1) { animation-delay: 0.1s; }
@@ -243,28 +265,148 @@
             background-color: rgba(35, 35, 35, 0.9);
         }
 
+        .game-image-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .game-image {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .game-card:hover .game-image {
+            transform: scale(1.03);
+            border-color: #555;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .game-card:hover .game-badge {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .badge-popular {
+            background: linear-gradient(135deg, #ff7b00, #ff006a);
+        }
+
+        .badge-classic {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+        }
+
+        .badge-multiplayer {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+        }
+
+        .badge-arcade {
+            background: linear-gradient(135deg, #f83600, #fe8c00);
+        }
+
+        .badge-action {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        }
+
+        .badge-brain {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+
+        .badge-adventure {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+        }
+
+        .badge-puzzle {
+            background: linear-gradient(135deg, #834d9b, #d04ed6);
+        }
+
         .game-title {
             font-family: 'Inter', Arial, sans-serif;
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
             color: #fff;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             position: relative;
             display: inline-block;
         }
 
         .game-description {
             font-family: 'Inter', Arial, sans-serif;
-            font-weight: 400;
+            font-weight: 500;
             color: #aaa;
             margin-bottom: 1.5rem;
             line-height: 1.6;
             font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .game-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 8px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-rating {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .game-rating i {
+            color: #ffdd00;
+            margin-right: 5px;
+        }
+
+        .game-plays {
+            font-size: 0.85rem;
+            color: #aaa;
+            font-weight: 600;
+            margin-left: 20px;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .favorite-btn:hover, .favorite-btn.active {
+            color: #ff3366;
+            transform: scale(1.2);
         }
 
         .play-btn {
             font-family: 'Inter', Arial, sans-serif;
-            font-weight: 600;
+            font-weight: 700;
             background-color: #333;
             border: none;
             padding: 0.8rem 1.5rem;
@@ -305,11 +447,14 @@
             text-align: center;
             margin: 2rem 0;
             animation: fadeIn 1s ease 0.5s both;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .search-box {
             font-family: 'Inter', Arial, sans-serif;
-            font-weight: 400;
+            font-weight: 500;
             background-color: rgba(30, 30, 30, 0.8);
             border: 1px solid #333;
             border-radius: 8px;
@@ -335,17 +480,17 @@
 
         .footer {
             font-family: 'Inter', Arial, sans-serif;
-            font-weight: 400;
+            font-weight: 500;
             text-align: center;
             padding: 2rem;
             margin-top: 3rem;
-            margin-left: 60px;
+            width: 100%;
+            padding-left: 60px;
             border-top: 1px solid #333;
             color: #777;
             animation: fadeIn 1s ease 1s both;
         }
 
-        /* Hacker-style typing cursor */
         .typing-cursor {
             display: inline-block;
             width: 10px;
@@ -360,7 +505,6 @@
             50% { opacity: 0; }
         }
 
-        /* Code lines background effect */
         .code-lines {
             position: fixed;
             top: 0;
@@ -378,14 +522,98 @@
                 transparent 30px
             );
         }
-
-        /* Music Player Styles */
-        .music-toggle {
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -3;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .corner-accent {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        .top-left {
+            top: 0;
+            left: 0;
+            border-top: 2px solid #00ffff;
+            border-left: 2px solid #00ffff;
+        }
+        
+        .top-right {
+            top: 0;
+            right: 0;
+            border-top: 2px solid #ff00ff;
+            border-right: 2px solid #ff00ff;
+        }
+        
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            border-bottom: 2px solid #ff00ff;
+            border-left: 2px solid #ff00ff;
+        }
+        
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            border-bottom: 2px solid #00ffff;
+            border-right: 2px solid #00ffff;
+        }
+        
+        .cyber-badge {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ffff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #00ffff;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        
+        .cyber-badge-text {
+            position: relative;
+            display: inline-block;
+            animation: glitch 3s infinite;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            1% { transform: translate(-2px, 1px); }
+            2% { transform: translate(2px, -1px); }
+            3% { transform: translate(0); }
+            95% { transform: translate(0); }
+            96% { transform: translate(-2px, 1px); }
+            97% { transform: translate(2px, -1px); }
+            98% { transform: translate(0); }
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background-color: rgba(30, 30, 30, 0.8);
             border: 1px solid #444;
@@ -394,137 +622,211 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 1000;
+            z-index: 100;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
 
-        .music-toggle:hover {
+        .theme-switch:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
         }
 
-        .music-player {
+        .notification {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
-            width: 300px;
-            height: 80px;
             background-color: rgba(25, 25, 25, 0.9);
-            border: 1px solid #444;
-            border-radius: 12px;
-            padding: 15px;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            transform: translateX(350px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #00ffff;
+            padding: 15px 20px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
         }
 
-        .music-player.active {
+        .notification.show {
             transform: translateX(0);
         }
 
-        .music-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .song-title {
-            font-size: 0.9rem;
-            font-weight: 600;
+        .notification-title {
+            font-weight: 800;
+            margin-bottom: 5px;
             color: #fff;
-            margin-right: auto;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 180px;
         }
 
-        .music-controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .control-btn {
-            background: none;
-            border: none;
+        .notification-message {
+            font-weight: 500;
             color: #aaa;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 30px;
-            height: 30px;
+            font-size: 0.9rem;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #121212, #1a1a1a, #222222, #1a1a1a);
             display: flex;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .loading-logo {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+        }
+
+        .loading-bar-container {
+            width: 300px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+            background-size: 200% 100%;
+            animation: loadingAnimation 2s linear forwards, gradientMove 2s infinite;
+        }
+
+        @keyframes loadingAnimation {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .loading-text {
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .loading-status {
+            color: #00ffff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            height: 1.2rem;
+        }
+
+        /* Tag filtering system */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1rem 0 2rem;
             justify-content: center;
         }
 
-        .control-btn:hover {
+        .tag-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 600;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #aaa;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .tag-btn:hover {
+            background-color: rgba(40, 40, 40, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             color: #fff;
-            transform: scale(1.1);
         }
 
-        .play-pause-btn {
-            background-color: rgba(60, 60, 60, 0.8);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
+        .tag-btn.active {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        .volume-control {
-            display: flex;
-            align-items: center;
+        .tag-btn.active.tag-popular {
+            background: linear-gradient(135deg, #ff7b00, #ff006a);
         }
 
-        .volume-slider {
-            width: 60px;
-            height: 4px;
-            -webkit-appearance: none;
-            background: #555;
-            outline: none;
-            border-radius: 2px;
-            margin-left: 5px;
+        .tag-btn.active.tag-classic {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
         }
 
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #fff;
-            cursor: pointer;
+        .tag-btn.active.tag-multiplayer {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
         }
 
-        .progress-container {
-            width: 100%;
-            height: 4px;
-            background-color: #555;
-            border-radius: 2px;
-            margin-top: 5px;
-            cursor: pointer;
-            position: relative;
+        .tag-btn.active.tag-arcade {
+            background: linear-gradient(135deg, #f83600, #fe8c00);
         }
 
-        .progress-bar {
-            height: 100%;
-            background-color: #888;
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.1s linear;
+        .tag-btn.active.tag-action {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
         }
 
-        /* Responsive styles */
+        .tag-btn.active.tag-brain {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+
+        .tag-btn.active.tag-adventure {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+        }
+
+        .tag-btn.active.tag-puzzle {
+            background: linear-gradient(135deg, #834d9b, #d04ed6);
+        }
+
+        .tag-btn.active.tag-all {
+            background: linear-gradient(135deg, #333, #555);
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 50px;
             }
             
-            .header, .container, .footer {
-                margin-left: 50px;
+            .header {
+                padding-left: 50px;
+            }
+            
+            .container {
+                padding-left: 50px;
+                width: calc(100% - 50px);
+            }
+            
+            .footer {
+                padding-left: 50px;
             }
             
             .logo { 
@@ -532,7 +834,7 @@
             }
             
             .games-grid { 
-                grid-template-columns: 1fr; 
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
                 gap: 1.5rem; 
             }
             
@@ -540,8 +842,31 @@
                 width: 280px; 
             }
 
-            .music-player {
-                width: 250px;
+            .tags-container {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE and Edge */
+            }
+            
+            .tags-container::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera */
+            }
+
+            .tag-btn {
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+            
+            .game-meta {
+                flex-wrap: wrap;
+            }
+            
+            .game-plays {
+                margin-left: 15px;
             }
         }
 
@@ -554,6 +879,7 @@
                 flex-direction: row;
                 padding: 0 1rem;
                 justify-content: space-around;
+                z-index: 1000;
             }
             
             .sidebar-nav {
@@ -561,33 +887,101 @@
                 justify-content: space-around;
                 padding: 0.5rem 0;
                 gap: 0;
+                width: 100%;
             }
             
-            .header, .container, .footer {
-                margin-left: 0;
-                margin-bottom: 60px;
+            .header {
+                padding-left: 0;
+                margin-bottom: 0;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                width: 100%;
+                margin-bottom: 70px;
             }
             
             .footer {
+                padding-left: 0;
                 margin-bottom: 70px;
             }
-
-            .music-player {
-                bottom: 80px;
-                right: 10px;
-                width: 220px;
+            
+            .theme-switch {
+                top: 20px;
+                right: 20px;
             }
-
-            .music-toggle {
-                bottom: 80px;
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .game-card {
+                padding: 1rem;
+            }
+            
+            .game-title {
+                font-size: 1.3rem;
+            }
+            
+            .game-description {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .game-meta {
+                padding: 6px 0;
+            }
+            
+            .search-box {
+                width: 90%;
+                max-width: 280px;
+            }
+            
+            .tags-container {
+                margin: 0.5rem 0 1.5rem;
+            }
+            
+            .tag-btn {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .notification {
+                max-width: 250px;
             }
         }
     </style>
-<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+    <script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
 <body>
+    <div class="loading-screen" id="loadingScreen">
+        <canvas class="matrix-bg" id="loadingMatrix"></canvas>
+        <div class="loading-content">
+            <h1 class="loading-logo">LunaX</h1>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+            <div class="loading-text">Initializing Game Portal...</div>
+            <div class="loading-status" id="loadingStatus">Connecting to server...</div>
+        </div>
+    </div>
+
     <canvas class="matrix-bg" id="matrix"></canvas>
     <div class="code-lines"></div>
+    <div class="grid-overlay"></div>
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent top-right"></div>
+    <div class="corner-accent bottom-left"></div>
+    <div class="corner-accent bottom-right"></div>
+    
+    <div class="theme-switch" id="themeSwitch">
+        <i class="fas fa-moon"></i>
+    </div>
+    
+    <div class="cyber-badge">
+        <span class="cyber-badge-text">LunaX</span>
+    </div>
     
     <div class="sidebar">
         <nav class="sidebar-nav">
@@ -615,41 +1009,153 @@
             <input type="text" class="search-box" placeholder="Search games..." id="searchBox" onkeyup="searchGames()">
         </div>
 
+        <div class="tags-container" id="tagsContainer">
+            <button class="tag-btn tag-all active" data-tag="all">All Games</button>
+            <button class="tag-btn tag-popular" data-tag="popular">Popular</button>
+            <button class="tag-btn tag-classic" data-tag="classic">Classic</button>
+            <button class="tag-btn tag-multiplayer" data-tag="multiplayer">Multiplayer</button>
+            <button class="tag-btn tag-arcade" data-tag="arcade">Arcade</button>
+            <button class="tag-btn tag-action" data-tag="action">Action</button>
+            <button class="tag-btn tag-brain" data-tag="brain">Brain</button>
+            <button class="tag-btn tag-adventure" data-tag="adventure">Adventure</button>
+            <button class="tag-btn tag-puzzle" data-tag="puzzle">Puzzle</button>
+        </div>
+
         <div id="gamesSection" class="games-grid">
-            <div class="game-card" data-game="snake">
+            <div class="game-card" data-game="snake" data-tags="popular,arcade">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1628483368890-4f4b8df2cb65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Snake Game" class="game-image">
+                    <div class="game-badge badge-popular">Popular</div>
+                </div>
                 <h3 class="game-title">Snake 2000</h3>
                 <p class="game-description">Classic snake game with modern graphics. Navigate through the digital maze and grow your serpent while avoiding obstacles.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.8</div>
+                    <div class="game-plays">12K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
                 <button class="play-btn" onclick="playGame('snake')">Play Now</button>
             </div>
 
-            <div class="game-card" data-game="tetris">
+            <div class="game-card" data-game="tetris" data-tags="classic,puzzle">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tetris Game" class="game-image">
+                    <div class="game-badge badge-classic">Classic</div>
+                </div>
                 <h3 class="game-title">Cyber Tetris</h3>
                 <p class="game-description">Futuristic block-stacking action with smooth animations. Test your spatial skills in this timeless puzzle challenge.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.9</div>
+                    <div class="game-plays">18K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
                 <button class="play-btn" onclick="playGame('tetris')">Play Now</button>
             </div>
 
-            <div class="game-card" data-game="pong">
+            <div class="game-card" data-game="pong" data-tags="multiplayer,classic">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pong Game" class="game-image">
+                    <div class="game-badge badge-multiplayer">Multiplayer</div>
+                </div>
                 <h3 class="game-title">Neon Pong</h3>
                 <p class="game-description">Retro-futuristic ping pong with enhanced physics. Battle against AI or challenge your friends in this classic arcade game.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.7</div>
+                    <div class="game-plays">9K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
                 <button class="play-btn" onclick="playGame('pong')">Play Now</button>
             </div>
 
-            <div class="game-card" data-game="breakout">
+            <div class="game-card" data-game="breakout" data-tags="arcade,action">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Breakout Game" class="game-image">
+                    <div class="game-badge badge-arcade">Arcade</div>
+                </div>
                 <h3 class="game-title">Matrix Breakout</h3>
                 <p class="game-description">Break through digital barriers in this enhanced brick-breaking adventure. Power-ups and special effects included.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.5</div>
+                    <div class="game-plays">7K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
                 <button class="play-btn" onclick="playGame('breakout')">Play Now</button>
             </div>
 
-            <div class="game-card" data-game="space">
+            <div class="game-card" data-game="space" data-tags="action,arcade">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Space Invaders Game" class="game-image">
+                    <div class="game-badge badge-action">Action</div>
+                </div>
                 <h3 class="game-title">Space Invaders 2K</h3>
                 <p class="game-description">Defend Earth from alien invasion in this millennium edition space shooter. Multiple weapons and boss battles await.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.6</div>
+                    <div class="game-plays">11K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
                 <button class="play-btn" onclick="playGame('space')">Play Now</button>
             </div>
 
-            <div class="game-card" data-game="puzzle">
+            <div class="game-card" data-game="puzzle" data-tags="brain,puzzle">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1611996575749-79a3a250f948?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Puzzle Game" class="game-image">
+                    <div class="game-badge badge-brain">Brain</div>
+                </div>
                 <h3 class="game-title">Digital Puzzle</h3>
                 <p class="game-description">Mind-bending puzzles with progressive difficulty. Challenge your logic and problem-solving skills in this brain teaser.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.4</div>
+                    <div class="game-plays">6K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
                 <button class="play-btn" onclick="playGame('puzzle')">Play Now</button>
+            </div>
+
+            <div class="game-card" data-game="adventure" data-tags="adventure,action">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Adventure Game" class="game-image">
+                    <div class="game-badge badge-adventure">Adventure</div>
+                </div>
+                <h3 class="game-title">Cyber Quest</h3>
+                <p class="game-description">Embark on an epic journey through a digital world. Solve mysteries, battle enemies, and discover hidden treasures.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.7</div>
+                    <div class="game-plays">8K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('adventure')">Play Now</button>
+            </div>
+
+            <div class="game-card" data-game="platformer" data-tags="action,adventure">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Platformer Game" class="game-image">
+                    <div class="game-badge badge-action">Action</div>
+                </div>
+                <h3 class="game-title">Neon Jumper</h3>
+                <p class="game-description">Navigate through challenging platforms in this fast-paced action game. Collect power-ups and avoid obstacles.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.5</div>
+                    <div class="game-plays">7.5K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('platformer')">Play Now</button>
             </div>
         </div>
     </div>
@@ -658,38 +1164,88 @@
         <p>© 2025 LunaX Gaming Portal | Powered by DayDropStudios</p>
     </footer>
 
-    <!-- Music Player Toggle Button -->
-    <div class="music-toggle" id="musicToggle">
-        <i class="fas fa-music"></i>
-    </div>
-
-    <!-- Music Player -->
-    <div class="music-player" id="musicPlayer">
-        <div class="music-info">
-            <div class="song-title" id="songTitle">Loading...</div>
-        </div>
-        <div class="music-controls">
-            <button class="control-btn" id="prevBtn">
-                <i class="fas fa-step-backward"></i>
-            </button>
-            <button class="control-btn play-pause-btn" id="playPauseBtn">
-                <i class="fas fa-play" id="playPauseIcon"></i>
-            </button>
-            <button class="control-btn" id="nextBtn">
-                <i class="fas fa-step-forward"></i>
-            </button>
-            <div class="volume-control">
-                <i class="fas fa-volume-up" id="volumeIcon"></i>
-                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.1" value="0.3">
-            </div>
-        </div>
-        <div class="progress-container" id="progressContainer">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
+    <div class="notification" id="notification">
+        <div class="notification-title">Game Loaded</div>
+        <div class="notification-message" id="notificationMessage">Ready to play!</div>
     </div>
 
     <script>
-        // Enhanced Matrix background effect with monochrome theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingStatus = document.getElementById('loadingStatus');
+            
+            const loadingCanvas = document.getElementById('loadingMatrix');
+            const loadingCtx = loadingCanvas.getContext('2d');
+            
+            loadingCanvas.width = window.innerWidth;
+            loadingCanvas.height = window.innerHeight;
+            
+            const matrixChars = "LUNAX01GAMES10PORTAL";
+            const matrixArray = matrixChars.split("");
+            
+            const fontSize = 14;
+            const columns = loadingCanvas.width / fontSize;
+            
+            const drops = [];
+            for(let x = 0; x < columns; x++) {
+                drops[x] = Math.random() * -100;
+            }
+            
+            function drawLoadingMatrix() {
+                loadingCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                loadingCtx.fillRect(0, 0, loadingCanvas.width, loadingCanvas.height);
+                
+                loadingCtx.fillStyle = 'rgba(200, 200, 200, 0.5)';
+                loadingCtx.font = fontSize + 'px monospace';
+                
+                for(let i = 0; i < drops.length; i++) {
+                    const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                    loadingCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if(drops[i] * fontSize > loadingCanvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            const loadingMatrixInterval = setInterval(drawLoadingMatrix, 35);
+            
+            const loadingMessages = [
+                "Connecting to server...",
+                "Initializing game data...",
+                "Loading game assets...",
+                "Configuring graphics...",
+                "Establishing secure connection...",
+                "Preparing game environment...",
+                "Almost ready..."
+            ];
+            
+            let progress = 0;
+            const loadingInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
+                    clearInterval(loadingMatrixInterval);
+                    loadingStatus.textContent = "Ready to play!";
+                    
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = 0;
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }, 500);
+                } else {
+                    const messageIndex = Math.floor((progress / 100) * loadingMessages.length);
+                    loadingStatus.textContent = loadingMessages[messageIndex];
+                }
+                
+                loadingBar.style.width = `${progress}%`;
+            }, 400);
+        });
+
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
 
@@ -711,12 +1267,19 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            ctx.fillStyle = 'rgba(200, 200, 200, 0.5)'; // Increased opacity for better visibility
+            ctx.fillStyle = 'rgba(200, 200, 200, 0.5)';
             ctx.font = fontSize + 'px monospace';
             
-            for(let i = 0; i < drops.length; i++) {
+            const columns = Math.ceil(canvas.width / fontSize);
+
+            while(drops.length < columns) {
+                drops.push(Math.random() * -100);
+            }
+            
+            for(let i = 0; i < columns; i++) {
                 const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                const x = i * fontSize;
+                ctx.fillText(text, x, drops[i] * fontSize);
                 
                 if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
@@ -727,12 +1290,22 @@
 
         setInterval(drawMatrix, 35);
 
-        // Game functions with enhanced animations
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            notificationMessage.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
         function playGame(gameName) {
             const btn = event.target;
             btn.style.transform = 'scale(0.95)';
             
-            // Create ripple effect
             const ripple = document.createElement('div');
             ripple.style.position = 'absolute';
             ripple.style.top = '0';
@@ -752,11 +1325,74 @@
             setTimeout(() => {
                 btn.style.transform = '';
                 ripple.remove();
-                alert(`Loading ${gameName}... This is a demo - integrate actual games here!`);
+                showNotification(`Loading ${gameName}... Get ready to play!`);
             }, 300);
         }
 
-        // Add ripple animation
+        function toggleFavorite(btn) {
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                btn.classList.add('active');
+                showNotification('Added to favorites!');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                btn.classList.remove('active');
+                showNotification('Removed from favorites!');
+            }
+        }
+
+        function filterGamesByTag(tag) {
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            gameCards.forEach(card => {
+                if (tag === 'all') {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    const gameTags = card.dataset.tags.split(',');
+                    if (gameTags.includes(tag)) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 50);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                }
+            });
+        }
+
+        // Initialize tag filtering
+        document.querySelectorAll('.tag-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.tag-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Filter games by tag
+                const tag = btn.dataset.tag;
+                filterGamesByTag(tag);
+                
+                // Show notification
+                showNotification(`Showing ${tag === 'all' ? 'all games' : tag + ' games'}`);
+            });
+        });
+
         const style = document.createElement('style');
         style.textContent = `
             @keyframes ripple {
@@ -774,11 +1410,9 @@
                 btn.classList.remove('active');
             });
             
-            // Handle click on icon inside button
             const clickedBtn = event.target.closest('.sidebar-btn');
             clickedBtn.classList.add('active');
             
-            // Add glitch effect to logo
             const logo = document.querySelector('.logo');
             logo.style.animation = 'glitch 0.3s ease';
             
@@ -786,9 +1420,6 @@
                 logo.style.animation = '';
             }, 300);
             
-            console.log(`Switching to ${section} section`);
-            
-            // Show search box when search section is selected
             if (section === 'search') {
                 document.getElementById('searchBox').focus();
                 document.getElementById('searchBox').style.transform = 'scale(1.05)';
@@ -796,9 +1427,10 @@
                     document.getElementById('searchBox').style.transform = '';
                 }, 300);
             }
+            
+            showNotification(`Switched to ${section} section`);
         }
 
-        // Add glitch animation
         const glitchStyle = document.createElement('style');
         glitchStyle.textContent = `
             @keyframes glitch {
@@ -829,7 +1461,6 @@
             });
         }
 
-        // Typing effect for search placeholder
         const searchBox = document.getElementById('searchBox');
         const placeholders = [
             'Search games...',
@@ -857,11 +1488,11 @@
             
             if (!isDeleting && charIndex === current.length) {
                 isDeleting = true;
-                typingSpeed = 1500; // Pause at the end
+                typingSpeed = 1500;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 currentPlaceholder = (currentPlaceholder + 1) % placeholders.length;
-                typingSpeed = 500; // Pause before typing next
+                typingSpeed = 500;
             }
             
             setTimeout(typeEffect, typingSpeed);
@@ -869,13 +1500,11 @@
 
         setTimeout(typeEffect, 1500);
 
-        // Resize canvas on window resize
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
 
-        // Add hover effect to game cards
         document.querySelectorAll('.game-card').forEach(card => {
             card.addEventListener('mouseenter', () => {
                 const title = card.querySelector('.game-title');
@@ -890,155 +1519,21 @@
             });
         });
 
-        // Music Player Functionality
-        const musicToggle = document.getElementById('musicToggle');
-        const musicPlayer = document.getElementById('musicPlayer');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const playPauseIcon = document.getElementById('playPauseIcon');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const volumeIcon = document.getElementById('volumeIcon');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const songTitle = document.getElementById('songTitle');
-
-        // Lofi songs (non-copyright)
-        const songs = [
-            {
-                title: "Chill Lofi Beat",
-                url: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
-            },
-            {
-                title: "Dreamy Atmosphere",
-                url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d16343d4d0.mp3?filename=lofi-chill-14093.mp3"
-            },
-            {
-                title: "Sunset Memories",
-                url: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b9232a2a.mp3?filename=lo-fi-hip-hop-118974.mp3"
-            },
-            {
-                title: "Urban Night",
-                url: "https://cdn.pixabay.com/download/audio/2022/10/25/audio_946b0e9c18.mp3?filename=lofi-chill-medium-version-159456.mp3"
-            },
-            {
-                title: "Rainy Day",
-                url: "https://cdn.pixabay.com/download/audio/2023/06/29/audio_8c8a0be886.mp3?filename=lofi-hip-hop-lo-fi-chill-hop-relaxing-music-for-study-sleep-work-etc-short-version-175950.mp3"
-            }
-        ];
-
-        let currentSongIndex = 0;
-        let isPlaying = false;
-        const audio = new Audio();
-        audio.volume = 0.3; // Default volume (30%)
-
-        // Initialize audio
-        function loadSong(index) {
-            const song = songs[index];
-            audio.src = song.url;
-            songTitle.textContent = song.title;
-        }
-
-        // Play/Pause toggle
-        function togglePlay() {
-            if (isPlaying) {
-                audio.pause();
-                playPauseIcon.className = 'fas fa-play';
+        const themeSwitch = document.getElementById('themeSwitch');
+        let darkMode = true;
+        
+        themeSwitch.addEventListener('click', () => {
+            darkMode = !darkMode;
+            if (darkMode) {
+                document.body.style.background = 'linear-gradient(-45deg, #121212, #1a1a1a, #222222, #1a1a1a)';
+                themeSwitch.innerHTML = '<i class="fas fa-moon"></i>';
+                showNotification('Dark mode activated');
             } else {
-                audio.play();
-                playPauseIcon.className = 'fas fa-pause';
-            }
-            isPlaying = !isPlaying;
-        }
-
-        // Previous song
-        function prevSong() {
-            currentSongIndex--;
-            if (currentSongIndex < 0) {
-                currentSongIndex = songs.length - 1;
-            }
-            loadSong(currentSongIndex);
-            if (isPlaying) {
-                audio.play();
-            }
-        }
-
-        // Next song
-        function nextSong() {
-            currentSongIndex++;
-            if (currentSongIndex > songs.length - 1) {
-                currentSongIndex = 0;
-            }
-            loadSong(currentSongIndex);
-            if (isPlaying) {
-                audio.play();
-            }
-        }
-
-        // Update progress bar
-        function updateProgress(e) {
-            const { duration, currentTime } = e.srcElement;
-            const progressPercent = (currentTime / duration) * 100;
-            progressBar.style.width = `${progressPercent}%`;
-        }
-
-        // Set progress bar
-        function setProgress(e) {
-            const width = this.clientWidth;
-            const clickX = e.offsetX;
-            const duration = audio.duration;
-            audio.currentTime = (clickX / width) * duration;
-        }
-
-        // Update volume
-        function updateVolume() {
-            audio.volume = volumeSlider.value;
-            
-            // Update volume icon based on level
-            if (audio.volume === 0) {
-                volumeIcon.className = 'fas fa-volume-mute';
-            } else if (audio.volume < 0.5) {
-                volumeIcon.className = 'fas fa-volume-down';
-            } else {
-                volumeIcon.className = 'fas fa-volume-up';
-            }
-        }
-
-        // Toggle mute
-        function toggleMute() {
-            if (audio.volume > 0) {
-                audio.volume = 0;
-                volumeSlider.value = 0;
-                volumeIcon.className = 'fas fa-volume-mute';
-            } else {
-                audio.volume = 0.3;
-                volumeSlider.value = 0.3;
-                volumeIcon.className = 'fas fa-volume-up';
-            }
-        }
-
-        // Event listeners
-        musicToggle.addEventListener('click', () => {
-            musicPlayer.classList.toggle('active');
-            if (!audio.src) {
-                loadSong(0);
+                document.body.style.background = 'linear-gradient(-45deg, #2c3e50, #3498db, #2980b9, #2c3e50)';
+                themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
+                showNotification('Light mode activated');
             }
         });
-
-        playPauseBtn.addEventListener('click', togglePlay);
-        prevBtn.addEventListener('click', prevSong);
-        nextBtn.addEventListener('click', nextSong);
-        audio.addEventListener('timeupdate', updateProgress);
-        progressContainer.addEventListener('click', setProgress);
-        volumeSlider.addEventListener('change', updateVolume);
-        volumeSlider.addEventListener('input', updateVolume);
-        volumeIcon.addEventListener('click', toggleMute);
-
-        // Auto play next song when current one ends
-        audio.addEventListener('ended', nextSong);
-
-        // Initialize first song
-        loadSong(currentSongIndex);
     </script>
 </body>
 </html>
