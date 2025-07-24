@@ -7,12 +7,4380 @@
     <title>LunaX - Unblocked Games Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* CSS content here - truncated for brevity */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            /* Dark Theme Variables (Default) */
+            --bg-primary: #121212;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-tertiary: #999999;
+            --accent-primary: #00c6ff;
+            --accent-secondary: #0072ff;
+            --border-color: #333333;
+            --card-bg: rgba(30, 30, 30, 0.8);
+            --modal-bg: rgba(25, 25, 25, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --header-bg: rgba(18, 18, 18, 0.9);
+            --sidebar-bg: #1a1a1a;
+            --matrix-opacity: 0.15;
+        }
+
+        [data-theme="light"] {
+            /* Light Theme Variables */
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #e5e5e5;
+            --bg-tertiary: #d5d5d5;
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --text-tertiary: #777777;
+            --accent-primary: #0072ff;
+            --accent-secondary: #00c6ff;
+            --border-color: #cccccc;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --modal-bg: rgba(245, 245, 245, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --header-bg: rgba(245, 245, 245, 0.9);
+            --sidebar-bg: #e5e5e5;
+            --matrix-opacity: 0.05;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-tertiary), var(--bg-secondary));
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            line-height: 1.6;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            letter-spacing: 0.02em;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: var(--matrix-opacity);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 60px;
+            background-color: #1a1a1a;
+            border-right: 1px solid #333;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .sidebar-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: transparent;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-btn:hover::before {
+            left: 0;
+        }
+
+        .sidebar-btn:hover {
+            background-color: #333;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-btn.active {
+            background-color: #333;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            margin-left: 0;
+            padding-left: 60px;
+            animation: fadeInDown 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(to bottom, #fff 20%, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            transition: width 0.5s ease;
+            animation: logoUnderline 1.5s ease forwards 0.5s;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes logoUnderline {
+            to {
+                width: 80%;
+            }
+        }
+        
+        .logo::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.3;
+            background: linear-gradient(to bottom, #fff, transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: calc(100% - 60px);
+            padding-left: 60px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            width: 100%;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            animation: cardAppear 0.6s ease both;
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 40%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 60%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            pointer-events: none;
+            z-index: 10;
+            transition: all 0.7s ease;
+            opacity: 0;
+        }
+
+        .game-card:nth-child(1) { animation-delay: 0.1s; }
+        .game-card:nth-child(2) { animation-delay: 0.2s; }
+        .game-card:nth-child(3) { animation-delay: 0.3s; }
+        .game-card:nth-child(4) { animation-delay: 0.4s; }
+        .game-card:nth-child(5) { animation-delay: 0.5s; }
+        .game-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #333, #555, #333);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .game-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            border-color: #444;
+            background-color: rgba(35, 35, 35, 0.9);
+        }
+        
+        .game-card:hover::after {
+            top: -100%;
+            left: -100%;
+            opacity: 1;
+        }
+
+        .game-image-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .game-image {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .game-card:hover .game-image {
+            transform: scale(1.03);
+            border-color: #555;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        
+        .game-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-card:hover .game-badge {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        
+        .game-card:hover .game-badge::before {
+            opacity: 0.5;
+        }
+
+        .badge-popular {
+            background: linear-gradient(135deg, #ff7b00, #ff006a);
+        }
+
+        .badge-classic {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+        }
+
+        .badge-multiplayer {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+        }
+
+        .badge-arcade {
+            background: linear-gradient(135deg, #f83600, #fe8c00);
+        }
+
+        .badge-action {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        }
+
+        .badge-brain {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+
+        .badge-adventure {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+        }
+
+        .badge-puzzle {
+            background: linear-gradient(135deg, #834d9b, #d04ed6);
+        }
+
+        .game-title {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .game-description {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 500;
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .game-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 8px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-rating {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .game-rating i {
+            color: #ffdd00;
+            margin-right: 5px;
+        }
+
+        .game-plays {
+            font-size: 0.85rem;
+            color: #aaa;
+            font-weight: 600;
+            margin-left: 20px;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .favorite-btn:hover, .favorite-btn.active {
+            color: #ff3366;
+            transform: scale(1.2);
+        }
+
+        .play-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            background-color: #333;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            width: 100%;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .play-btn::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 20px
+            );
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .play-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .play-btn:hover::before {
+            left: 100%;
+        }
+
+        .play-btn:hover {
+            background-color: #444;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        .play-btn:hover::after {
+            opacity: 0.3;
+            animation: buttonPattern 10s linear infinite;
+        }
+        
+        @keyframes buttonPattern {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 2rem 0;
+            animation: fadeIn 1s ease 0.5s both;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-box {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 600;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            color: #fff;
+            font-size: 1rem;
+            width: 350px;
+            max-width: 90%;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #333, #555, #333);
+            z-index: -1;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #555;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+            background-color: rgba(35, 35, 35, 0.9);
+        }
+        
+        .search-box:focus::before {
+            opacity: 1;
+            animation: borderGlow 2s linear infinite;
+        }
+        
+        @keyframes borderGlow {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+
+        .search-box::placeholder {
+            color: #777;
+        }
+
+        .footer {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 500;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+            padding-left: 60px;
+            border-top: 1px solid #333;
+            color: #777;
+            animation: fadeIn 1s ease 1s both;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #fff;
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .code-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0.05;
+            background-image: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.1) 1px,
+                transparent 1px,
+                transparent 30px
+            );
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -3;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .corner-accent {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        .top-left {
+            top: 0;
+            left: 0;
+            border-top: 2px solid #00ffff;
+            border-left: 2px solid #00ffff;
+        }
+        
+        .top-right {
+            top: 0;
+            right: 0;
+            border-top: 2px solid #ff00ff;
+            border-right: 2px solid #ff00ff;
+        }
+        
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            border-bottom: 2px solid #ff00ff;
+            border-left: 2px solid #ff00ff;
+        }
+        
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            border-bottom: 2px solid #00ffff;
+            border-right: 2px solid #00ffff;
+        }
+        
+        .cyber-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ffff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #00ffff;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+        
+        .cyber-badge-text {
+            position: relative;
+            display: inline-block;
+            animation: glitch 3s infinite;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            1% { transform: translate(-2px, 1px); }
+            2% { transform: translate(2px, -1px); }
+            3% { transform: translate(0); }
+            95% { transform: translate(0); }
+            96% { transform: translate(-2px, 1px); }
+            97% { transform: translate(2px, -1px); }
+            98% { transform: translate(0); }
+        }
+        
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.08;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 0, 0, 0.5) 51%
+            );
+            background-size: 100% 4px;
+        }
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        .circuit-pattern {
+            position: fixed;
+            width: 300px;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10,10 L30,10 L30,30 L50,30 L50,50 L70,50 L70,70 L90,70 L90,90' stroke='white' fill='none' stroke-width='1'/%3E%3Ccircle cx='30' cy='30' r='2' fill='white'/%3E%3Ccircle cx='50' cy='50' r='2' fill='white'/%3E%3Ccircle cx='70' cy='70' r='2' fill='white'/%3E%3Cpath d='M10,90 L30,90 L30,70 L50,70 L50,50 L70,50 L70,30 L90,30 L90,10' stroke='white' fill='none' stroke-width='1'/%3E%3Ccircle cx='30' cy='70' r='2' fill='white'/%3E%3Ccircle cx='70' cy='30' r='2' fill='white'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+        
+        .left-circuit {
+            left: 0;
+            top: 0;
+            animation: circuitPulse 8s infinite alternate;
+        }
+        
+        .right-circuit {
+            right: 0;
+            top: 0;
+            transform: scaleX(-1);
+            animation: circuitPulse 8s infinite alternate-reverse;
+        }
+        
+        @keyframes circuitPulse {
+            0% { opacity: 0.03; }
+            50% { opacity: 0.07; }
+            100% { opacity: 0.03; }
+        }
+        
+        .data-stream {
+            position: fixed;
+            height: 30px;
+            width: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: linear-gradient(90deg, 
+                transparent 0%, 
+                transparent 5%, 
+                rgba(255, 255, 255, 0.5) 5%, 
+                rgba(255, 255, 255, 0.5) 10%, 
+                transparent 10%, 
+                transparent 15%, 
+                rgba(255, 255, 255, 0.5) 15%, 
+                rgba(255, 255, 255, 0.5) 20%, 
+                transparent 20%, 
+                transparent 25%, 
+                rgba(255, 255, 255, 0.5) 25%, 
+                rgba(255, 255, 255, 0.5) 30%,
+                transparent 30%);
+            background-size: 300px 100%;
+            animation: dataStream 10s linear infinite;
+        }
+        
+        .top-stream {
+            top: 100px;
+        }
+        
+        .bottom-stream {
+            bottom: 100px;
+            transform: scaleX(-1);
+            animation-duration: 15s;
+        }
+        
+        @keyframes dataStream {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; }
+        }
+        
+        .pulse-circle {
+            position: fixed;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            z-index: -3;
+            opacity: 0;
+            animation: pulse 8s ease-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% { 
+                transform: translate(-50%, 50%) scale(0.1); 
+                opacity: 0.3;
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+            100% { 
+                transform: translate(-50%, 50%) scale(3); 
+                opacity: 0;
+                border-color: rgba(255, 255, 255, 0);
+            }
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(25, 25, 25, 0.9);
+            border-left: 4px solid #00ffff;
+            padding: 15px 20px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-title {
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .notification-message {
+            font-weight: 500;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, #121212, #1a1a1a, #222222, #1a1a1a);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .loading-logo {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+        }
+
+        .loading-bar-container {
+            width: 300px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+            background-size: 200% 100%;
+            animation: loadingAnimation 2s linear forwards, gradientMove 2s infinite;
+        }
+
+        @keyframes loadingAnimation {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .loading-text {
+            color: #fff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .loading-status {
+            color: #00ffff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            height: 1.2rem;
+        }
+
+        /* Tag filtering system */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1rem 0 2rem;
+            justify-content: center;
+        }
+
+        .tag-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #aaa;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+        
+        .tag-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            transition: left 0.7s ease;
+        }
+
+        .tag-btn:hover {
+            background-color: rgba(40, 40, 40, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        
+        .tag-btn:hover::before {
+            left: 100%;
+        }
+
+        .tag-btn.active {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .tag-btn.active.tag-popular {
+            background: linear-gradient(135deg, #ff7b00, #ff006a);
+        }
+
+        .tag-btn.active.tag-classic {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+        }
+
+        .tag-btn.active.tag-multiplayer {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+        }
+
+        .tag-btn.active.tag-arcade {
+            background: linear-gradient(135deg, #f83600, #fe8c00);
+        }
+
+        .tag-btn.active.tag-action {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        }
+
+        .tag-btn.active.tag-brain {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+
+        .tag-btn.active.tag-adventure {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+        }
+
+        .tag-btn.active.tag-puzzle {
+            background: linear-gradient(135deg, #834d9b, #d04ed6);
+        }
+
+        .tag-btn.active.tag-all {
+            background: linear-gradient(135deg, #333, #555);
+        }
+
+        /* NEW STYLES FOR ADDITIONAL FEATURES */
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background-color: rgba(25, 25, 25, 0.95);
+            border: 1px solid #444;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-title {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-subtitle {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #aaa;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            background-color: #333;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+        }
+
+        .modal-btn:hover {
+            background-color: #444;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+        }
+
+        .modal-btn-primary:hover {
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+        }
+
+        /* User Profile Dropdown */
+        .profile-container {
+            position: fixed;
+            top: 20px;
+            right: 80px;
+            z-index: 100;
+        }
+
+        .profile-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .profile-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: rgba(25, 25, 25, 0.95);
+            border: 1px solid #444;
+            border-radius: 8px;
+            width: 200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .profile-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-header {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+
+        .profile-email {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .profile-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .profile-menu li {
+            padding: 0;
+        }
+
+        .profile-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: #aaa;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .profile-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .profile-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .profile-menu .logout {
+            border-top: 1px solid #333;
+            margin-top: 0.5rem;
+        }
+
+        .profile-menu .logout a {
+            color: #ff4b4b;
+        }
+
+        .profile-menu .logout a:hover {
+            background-color: rgba(255, 75, 75, 0.1);
+        }
+
+        /* Featured Games Slider */
+        .featured-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 3rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: 400px;
+        }
+
+        .featured-slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .featured-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        }
+
+        .featured-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .featured-description {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #ddd;
+            margin-bottom: 1rem;
+            max-width: 600px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .featured-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .featured-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .featured-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .featured-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .featured-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .featured-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .featured-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .featured-indicator.active {
+            background-color: #fff;
+            transform: scale(1.2);
+        }
+
+        /* News & Updates Section */
+        .news-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: #444;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-date {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .news-excerpt {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .news-link {
+            font-weight: 600;
+            color: #00c6ff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .news-link:hover {
+            color: #0072ff;
+        }
+
+        .news-link i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .news-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* Game Details Modal */
+        .game-details-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .game-details-image {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-details-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-details-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .game-details-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .game-details-rating {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: #fff;
+            background-color: rgba(255, 221, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .game-details-rating i {
+            color: #ffdd00;
+            margin-right: 5px;
+        }
+
+        .game-details-category {
+            background-color: rgba(0, 198, 255, 0.2);
+            color: #00c6ff;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .game-details-plays {
+            color: #aaa;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .game-details-date {
+            color: #aaa;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .game-details-description {
+            color: #aaa;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .game-details-section {
+            margin-bottom: 2rem;
+        }
+
+        .game-details-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .game-details-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #00c6ff, transparent);
+        }
+
+        .controls-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 0.8rem;
+        }
+
+        .control-key {
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            margin-right: 10px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .control-action {
+            color: #aaa;
+            font-weight: 500;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .screenshot {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: #00c6ff;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Partners Section */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .partner-card {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: #444;
+        }
+
+        .partner-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin: 0 auto 1rem;
+        }
+
+        .partner-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-description {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        /* Footer Links */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Social Media */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            color: #fff;
+        }
+
+        .social-link.twitter:hover {
+            background-color: #1da1f2;
+            border-color: #1da1f2;
+        }
+
+        .social-link.facebook:hover {
+            background-color: #1877f2;
+            border-color: #1877f2;
+        }
+
+        .social-link.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-color: #bc1888;
+        }
+
+        .social-link.discord:hover {
+            background-color: #5865f2;
+            border-color: #5865f2;
+        }
+
+        /* Achievements Section */
+        .achievements-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .achievement-card {
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .achievement-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: #444;
+        }
+
+        .achievement-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(0, 198, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: #00c6ff;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover .achievement-icon {
+            transform: scale(1.1);
+            background-color: rgba(0, 198, 255, 0.2);
+        }
+
+        .achievement-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-description {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-progress {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .achievement-status {
+            font-size: 0.8rem;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .achievement-locked {
+            opacity: 0.5;
+        }
+
+        .achievement-locked .achievement-icon {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #aaa;
+        }
+
+        .achievement-locked::after {
+            content: '\f023';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Quick Access Menu */
+        .quick-access {
+            position: fixed;
+            bottom: 20px;
+            left: 80px;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .quick-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .quick-btn:hover {
+            transform: translateY(-5px);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .quick-btn.info:hover {
+            background-color: #00c6ff;
+            border-color: #00c6ff;
+        }
+
+        .quick-btn.credits:hover {
+            background-color: #ff416c;
+            border-color: #ff416c;
+        }
+
+        .quick-btn.contact:hover {
+            background-color: #11998e;
+            border-color: #11998e;
+        }
+
+        .quick-btn.partners:hover {
+            background-color: #4a00e0;
+            border-color: #4a00e0;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 50px;
+            }
+            
+            .header {
+                padding-left: 50px;
+            }
+            
+            .container {
+                padding-left: 50px;
+                width: calc(100% - 50px);
+            }
+            
+            .footer {
+                padding-left: 50px;
+            }
+            
+            .logo { 
+                font-size: 3rem; 
+            }
+            
+            .games-grid { 
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+                gap: 1.5rem; 
+            }
+            
+            .search-box { 
+                width: 280px; 
+            }
+
+            .tags-container {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                justify-content: flex-start;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE and Edge */
+            }
+            
+            .tags-container::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera */
+            }
+
+            .tag-btn {
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+            
+            .game-meta {
+                flex-wrap: wrap;
+            }
+            
+            .game-plays {
+                margin-left: 15px;
+            }
+            
+            .featured-container {
+                height: 300px;
+            }
+            
+            .featured-title {
+                font-size: 1.5rem;
+            }
+            
+            .featured-description {
+                font-size: 0.9rem;
+            }
+            
+            .game-details-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-container {
+                right: 70px;
+            }
+            
+            .quick-access {
+                left: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                bottom: 0;
+                top: auto;
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                padding: 0 1rem;
+                justify-content: space-around;
+                z-index: 1000;
+            }
+            
+            .sidebar-nav {
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0.5rem 0;
+                gap: 0;
+                width: 100%;
+            }
+            
+            .header {
+                padding-left: 0;
+                margin-bottom: 0;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                width: 100%;
+                margin-bottom: 70px;
+            }
+            
+            .footer {
+                padding-left: 0;
+                margin-bottom: 70px;
+            }
+            
+            .theme-switch {
+                top: 20px;
+                right: 20px;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .game-card {
+                padding: 1rem;
+            }
+            
+            .game-title {
+                font-size: 1.3rem;
+            }
+            
+            .game-description {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .game-meta {
+                padding: 6px 0;
+            }
+            
+            .search-box {
+                width: 90%;
+                max-width: 280px;
+            }
+            
+            .tags-container {
+                margin: 0.5rem 0 1.5rem;
+            }
+            
+            .tag-btn {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .notification {
+                max-width: 250px;
+            }
+            
+            .featured-container {
+                height: 250px;
+            }
+            
+            .featured-content {
+                padding: 1rem;
+            }
+            
+            .featured-title {
+                font-size: 1.2rem;
+            }
+            
+            .featured-description {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .featured-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .profile-container {
+                right: 70px;
+            }
+            
+            .quick-access {
+                bottom: 70px;
+                left: 20px;
+            }
+            
+            .modal-container {
+                padding: 1.5rem;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .controls-list,
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    /* Authentication Styles */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+        
+        .theme-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle-btn:hover {
+            background: rgba(0, 198, 255, 0.1);
+            transform: rotate(30deg);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 114, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #00c6ff;
+            border: 1px solid #00c6ff;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 198, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* User Profile */
+        .user-profile {
+            position: relative;
+        }
+
+        .user-profile-dropdown {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid #333;
+        }
+
+        .user-profile-header:hover {
+            background: rgba(40, 40, 40, 0.8);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00c6ff;
+        }
+
+        .user-profile-dropdown-content {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 200px;
+            background: rgba(25, 25, 25, 0.95);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-profile-dropdown:hover .user-profile-dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-profile-dropdown-content a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .user-profile-dropdown-content a:hover {
+            background: rgba(0, 198, 255, 0.1);
+            color: #00c6ff;
+        }
+
+        /* Auth Modal */
+        #authModal {
+            max-width: 450px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: #00c6ff;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #00c6ff;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #ccc;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .input-with-icon input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-with-icon input:focus {
+            border-color: #00c6ff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.2);
+        }
+
+        .form-checkbox {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .form-checkbox input {
+            width: 16px;
+            height: 16px;
+        }
+
+        .auth-message {
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .auth-message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff6b6b;
+        }
+
+        .auth-message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #69db7c;
+        }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .auth-footer a {
+            color: #00c6ff;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .auth-separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-tertiary);
+        }
+        
+        .auth-separator::before,
+        .auth-separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .auth-separator span {
+            padding: 0 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .google-btn {
+            width: 100%;
+            max-width: 240px;
+            height: 40px;
+            border-radius: 4px;
+            background: #4285F4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        /* Avatar selection styles */
+        .avatar-instructions {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .avatar-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .avatar-option {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .avatar-option:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+        }
+        
+        .avatar-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .custom-avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 198, 255, 0.1);
+            color: var(--accent-primary);
+        }
+        
+        .custom-avatar-placeholder i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .custom-avatar-placeholder span {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* User Profile Modal */
+        .user-profile-details {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-profile-avatar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-profile-avatar img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #00c6ff;
+        }
+
+        .user-profile-info {
+            flex: 1;
+        }
+
+        .user-profile-info input,
+        .user-profile-info textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile-info textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: #00c6ff;
+        }
+
+        .stat-card i {
+            font-size: 1.5rem;
+            color: #00c6ff;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Recommendations Styles */
+        .recommendations-container {
+            padding: 1rem;
+            background: rgba(20, 20, 20, 0.5);
+            border-radius: 12px;
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+        }
+
+        .recommendations-intro {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #ccc;
+        }
+
+        .recommended-games {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .recommended-game {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .recommended-game:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: #00c6ff;
+        }
+
+        .recommended-game-image {
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .recommended-game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .recommended-game:hover .recommended-game-image img {
+            transform: scale(1.1);
+        }
+
+        .recommended-game-info {
+            padding: 1rem;
+            flex: 1;
+        }
+
+        .recommended-game-info h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .recommended-game-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .recommended-game .game-tag {
+            background: rgba(0, 198, 255, 0.2);
+            color: #00c6ff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .recommended-play-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .recommended-play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 114, 255, 0.4);
+        }
+
+        /* Forum Styles */
+        .forum-view {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .forum-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .forum-header h3 {
+            flex: 1;
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .forum-back-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .forum-back-btn:hover {
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .forum-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .forum-category {
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .forum-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border-color: var(--accent-primary);
+        }
+
+        .forum-category-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 198, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .forum-category-info {
+            flex: 1;
+        }
+
+        .forum-category-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .forum-category-info p {
+            margin: 0 0 1rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .forum-category-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .forum-threads {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .forum-thread {
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .forum-thread:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border-color: var(--accent-primary);
+        }
+
+        .forum-thread.pinned {
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        .pinned-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 198, 255, 0.1);
+            color: var(--accent-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .forum-thread-info h3 {
+            margin: 0 0 0.75rem 0;
+            color: var(--text-primary);
+        }
+
+        .forum-thread-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .forum-thread-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .forum-thread-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .forum-post {
+            display: flex;
+            gap: 1.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .forum-post.thread-main-post {
+            background: rgba(0, 198, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 198, 255, 0.2);
+        }
+
+        .forum-post.comment {
+            padding: 1.5rem 0;
+        }
+
+        .forum-post-author {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100px;
+        }
+
+        .forum-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--accent-primary);
+        }
+
+        .forum-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .forum-author-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .forum-post-content {
+            flex: 1;
+        }
+
+        .forum-post-meta {
+            margin-bottom: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .forum-post-text {
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            letter-spacing: 0.01em;
+            word-spacing: 0.05em;
+            white-space: pre-line;
+        }
+
+        .forum-post-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .forum-action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .forum-action-btn:hover {
+            color: var(--accent-primary);
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .forum-comments {
+            margin-top: 2rem;
+        }
+
+        .comments-title {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+        }
+
+        .no-comments {
+            color: var(--text-tertiary);
+            font-style: italic;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .comment-form-container {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .comment-form h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+
+        .comment-form textarea:focus {
+            border-color: var(--accent-primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.2);
+        }
+
+        .login-prompt {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .login-prompt p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Rich Text Editor */
+        .rich-text-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+        
+        .rich-text-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .rich-text-btn:hover {
+            background: rgba(0, 198, 255, 0.1);
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        
+        .rich-text-btn.active {
+            background: rgba(0, 198, 255, 0.2);
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        
+        /* Emoji Picker */
+        .emoji-picker {
+            position: fixed;
+            width: 320px;
+            max-height: 200px;
+            background: var(--modal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .emoji-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .emoji-btn:hover {
+            background: rgba(0, 198, 255, 0.1);
+            border-color: var(--accent-primary);
+        }
+        
+        .emoji-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .emoji-close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-actions {
+                margin-left: 1rem;
+            }
+            
+            .auth-buttons {
+                gap: 0.5rem;
+            }
+            
+            .btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            
+            .user-profile-details {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
     <script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
 <body>
-    <!-- HTML content here - truncated for brevity -->
+    <div class="loading-screen" id="loadingScreen">
+        <canvas class="matrix-bg" id="loadingMatrix"></canvas>
+        <div class="loading-content">
+            <h1 class="loading-logo">LunaX</h1>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+            <div class="loading-text">Initializing Game Portal...</div>
+            <div class="loading-status" id="loadingStatus">Connecting to server...</div>
+        </div>
+    </div>
+
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    <div class="code-lines"></div>
+    <div class="grid-overlay"></div>
+    <div class="scanlines"></div>
+    <div class="noise-overlay"></div>
+    <div class="circuit-pattern left-circuit"></div>
+    <div class="circuit-pattern right-circuit"></div>
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent top-right"></div>
+    <div class="corner-accent bottom-left"></div>
+    <div class="corner-accent bottom-right"></div>
+    
+    <div class="theme-switch" id="themeSwitch">
+        <i class="fas fa-moon"></i>
+    </div>
+    
+    <div class="profile-container">
+        <div class="profile-btn" id="profileBtn">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <div class="profile-name">Guest User</div>
+                <div class="profile-email">Sign in to save progress</div>
+            </div>
+            <ul class="profile-menu">
+                <li><a href="#"><i class="fas fa-user-circle"></i> My Profile</a></li>
+                <li><a href="#"><i class="fas fa-gamepad"></i> My Games</a></li>
+                <li><a href="#"><i class="fas fa-trophy"></i> Achievements</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li class="logout"><a href="#"><i class="fas fa-sign-out-alt"></i> Sign In</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="cyber-badge">
+        <span class="cyber-badge-text">LUNAX</span>
+    </div>
+    
+    <div class="data-stream top-stream"></div>
+    <div class="data-stream bottom-stream"></div>
+    
+    <div class="pulse-circle"></div>
+    
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <button class="sidebar-btn active" onclick="showSection('games')" title="Games">
+                <i class="fas fa-gamepad"></i>
+            </button>
+            <button class="sidebar-btn" onclick="showSection('recommendations')" title="Recommended">
+                <i class="fas fa-star"></i>
+            </button>
+            <button class="sidebar-btn" onclick="showSection('forum')" title="Community Forum">
+                <i class="fas fa-comments"></i>
+            </button>
+            <button class="sidebar-btn" onclick="showSection('news')" title="News">
+                <i class="fas fa-newspaper"></i>
+            </button>
+            <button class="sidebar-btn" onclick="showSection('achievements')" title="Achievements">
+                <i class="fas fa-trophy"></i>
+            </button>
+            <button class="sidebar-btn" onclick="showSection('search')" title="Search">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="sidebar-btn" onclick="showSection('settings')" title="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+        </nav>
+    </div>
+
+    <div class="quick-access">
+        <div class="quick-btn info" onclick="openModal('aboutModal')" title="About">
+            <i class="fas fa-info"></i>
+        </div>
+        <div class="quick-btn credits" onclick="openModal('creditsModal')" title="Credits">
+            <i class="fas fa-award"></i>
+        </div>
+        <div class="quick-btn contact" onclick="openModal('contactModal')" title="Contact Us">
+            <i class="fas fa-envelope"></i>
+        </div>
+        <div class="quick-btn partners" onclick="openModal('partnersModal')" title="Partners">
+            <i class="fas fa-handshake"></i>
+        </div>
+    </div>
+
+    <header class="header">
+        <h1 class="logo" data-text="LunaX">LunaX</h1>
+        <div class="header-actions">
+            <!-- Theme toggle button -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Switch to Light Mode">
+                <i class="fas fa-sun"></i>
+            </button>
+            
+            <!-- User profile for logged-in users -->
+            <div class="user-profile logged-in-only" style="display: none;">
+                <div class="user-profile-dropdown">
+                    <div class="user-profile-header">
+                        <img id="userAvatar" src="https://api.dicebear.com/6.x/pixel-art/svg?seed=default" alt="User Avatar" class="user-avatar">
+                        <span id="userDisplayName">User</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="user-profile-dropdown-content">
+                        <a href="#" onclick="showUserProfile()"><i class="fas fa-user"></i> My Profile</a>
+                        <a href="#" onclick="showUserSettings()"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" onclick="showUserAchievements()"><i class="fas fa-trophy"></i> Achievements</a>
+                        <a href="#" onclick="showUserFavorites()"><i class="fas fa-heart"></i> Favorites</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Login/Register buttons for logged-out users -->
+            <div class="auth-buttons logged-out-only">
+                <button id="loginBtn" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Login</button>
+                <button id="registerBtn" class="btn btn-primary"><i class="fas fa-user-plus"></i> Register</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Featured Games Slider -->
+        <div class="featured-container">
+            <div class="featured-slider" id="featuredSlider">
+                <div class="featured-slide">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Featured Game" class="featured-image">
+                    <div class="featured-content">
+                        <h2 class="featured-title">Matrix Breakout: Ultimate Edition</h2>
+                        <p class="featured-description">Break through digital barriers in this enhanced brick-breaking adventure with new power-ups and special effects.</p>
+                        <button class="featured-btn" onclick="playGame('breakout')">Play Now</button>
+                    </div>
+                </div>
+                <div class="featured-slide">
+                    <img src="https://images.unsplash.com/photo-1628483368890-4f4b8df2cb65?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Featured Game" class="featured-image">
+                    <div class="featured-content">
+                        <h2 class="featured-title">Snake 2000: Remastered</h2>
+                        <p class="featured-description">The classic snake game with modern graphics and enhanced gameplay. Navigate through the digital maze.</p>
+                        <button class="featured-btn" onclick="playGame('snake')">Play Now</button>
+                    </div>
+                </div>
+                <div class="featured-slide">
+                    <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Featured Game" class="featured-image">
+                    <div class="featured-content">
+                        <h2 class="featured-title">Cyber Tetris: Neon Edition</h2>
+                        <p class="featured-description">Futuristic block-stacking action with smooth animations and a cyberpunk aesthetic.</p>
+                        <button class="featured-btn" onclick="playGame('tetris')">Play Now</button>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-nav">
+                <div class="featured-nav-btn" id="prevSlide">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="featured-nav-btn" id="nextSlide">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            <div class="featured-indicators" id="featuredIndicators">
+                <div class="featured-indicator active"></div>
+                <div class="featured-indicator"></div>
+                <div class="featured-indicator"></div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search games..." id="searchBox" onkeyup="searchGames()">
+        </div>
+
+        <div class="tags-container" id="tagsContainer">
+            <button class="tag-btn tag-all active" data-tag="all">All Games</button>
+            <button class="tag-btn tag-popular" data-tag="popular">Popular</button>
+            <button class="tag-btn tag-classic" data-tag="classic">Classic</button>
+            <button class="tag-btn tag-multiplayer" data-tag="multiplayer">Multiplayer</button>
+            <button class="tag-btn tag-arcade" data-tag="arcade">Arcade</button>
+            <button class="tag-btn tag-action" data-tag="action">Action</button>
+            <button class="tag-btn tag-brain" data-tag="brain">Brain</button>
+            <button class="tag-btn tag-adventure" data-tag="adventure">Adventure</button>
+            <button class="tag-btn tag-puzzle" data-tag="puzzle">Puzzle</button>
+        </div>
+
+        <!-- Games Section -->
+        <div id="gamesSection" class="games-grid">
+            <div class="game-card" data-game="snake" data-tags="popular,arcade">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1628483368890-4f4b8df2cb65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Snake Game" class="game-image">
+                    <div class="game-badge badge-popular">Popular</div>
+                </div>
+                <h3 class="game-title">Snake 2000</h3>
+                <p class="game-description">Classic snake game with modern graphics. Navigate through the digital maze and grow your serpent while avoiding obstacles.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.8</div>
+                    <div class="game-plays">12K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('snake')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('snake')">Details</button>
+            </div>
+
+            <div class="game-card" data-game="tetris" data-tags="classic,puzzle">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tetris Game" class="game-image">
+                    <div class="game-badge badge-classic">Classic</div>
+                </div>
+                <h3 class="game-title">Cyber Tetris</h3>
+                <p class="game-description">Futuristic block-stacking action with smooth animations. Test your spatial skills in this timeless puzzle challenge.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.9</div>
+                    <div class="game-plays">18K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('tetris')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('tetris')">Details</button>
+            </div>
+
+            <div class="game-card" data-game="pong" data-tags="multiplayer,classic">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pong Game" class="game-image">
+                    <div class="game-badge badge-multiplayer">Multiplayer</div>
+                </div>
+                <h3 class="game-title">Neon Pong</h3>
+                <p class="game-description">Retro-futuristic ping pong with enhanced physics. Battle against AI or challenge your friends in this classic arcade game.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.7</div>
+                    <div class="game-plays">9K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('pong')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('pong')">Details</button>
+            </div>
+
+            <div class="game-card" data-game="breakout" data-tags="arcade,action">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Breakout Game" class="game-image">
+                    <div class="game-badge badge-arcade">Arcade</div>
+                </div>
+                <h3 class="game-title">Matrix Breakout</h3>
+                <p class="game-description">Break through digital barriers in this enhanced brick-breaking adventure. Power-ups and special effects included.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.5</div>
+                    <div class="game-plays">7K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('breakout')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('breakout')">Details</button>
+            </div>
+
+            <div class="game-card" data-game="space" data-tags="action,arcade">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Space Invaders Game" class="game-image">
+                    <div class="game-badge badge-action">Action</div>
+                </div>
+                <h3 class="game-title">Space Invaders 2K</h3>
+                <p class="game-description">Defend Earth from alien invasion in this millennium edition space shooter. Multiple weapons and boss battles await.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.6</div>
+                    <div class="game-plays">11K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('space')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('space')">Details</button>
+            </div>
+
+            <div class="game-card" data-game="puzzle" data-tags="brain,puzzle">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1611996575749-79a3a250f948?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Puzzle Game" class="game-image">
+                    <div class="game-badge badge-brain">Brain</div>
+                </div>
+                <h3 class="game-title">Digital Puzzle</h3>
+                <p class="game-description">Mind-bending puzzles with progressive difficulty. Challenge your logic and problem-solving skills in this brain teaser.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.4</div>
+                    <div class="game-plays">6K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('puzzle')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('puzzle')">Details</button>
+            </div>
+
+            <div class="game-card" data-game="adventure" data-tags="adventure,action">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1618336753974-aae8e04506aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Adventure Game" class="game-image">
+                    <div class="game-badge badge-adventure">Adventure</div>
+                </div>
+                <h3 class="game-title">Cyber Quest</h3>
+                <p class="game-description">Embark on an epic journey through a digital world. Solve mysteries, battle enemies, and discover hidden treasures.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.7</div>
+                    <div class="game-plays">8K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('adventure')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('adventure')">Details</button>
+            </div>
+
+            <div class="game-card" data-game="platformer" data-tags="action,adventure">
+                <div class="game-image-container">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Platformer Game" class="game-image">
+                    <div class="game-badge badge-action">Action</div>
+                </div>
+                <h3 class="game-title">Neon Jumper</h3>
+                <p class="game-description">Navigate through challenging platforms in this fast-paced action game. Collect power-ups and avoid obstacles.</p>
+                <div class="game-meta">
+                    <div class="game-rating"><i class="fas fa-star"></i> 4.5</div>
+                    <div class="game-plays">7.5K plays</div>
+                    <button class="favorite-btn" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <button class="play-btn" onclick="playGame('platformer')">Play Now</button>
+                <button class="play-btn" style="margin-top: 10px; background-color: #333;" onclick="openGameDetails('platformer')">Details</button>
+            </div>
+        </div>
+
+        <!-- News Section -->
+        <div id="newsSection" style="display: none;">
+            <h2 class="section-title">News & Updates</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="News Image" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">July 20, 2025</div>
+                        <h3 class="news-title">New Games Added to LunaX Portal</h3>
+                        <p class="news-excerpt">We've added 5 new exciting games to our collection. Check out the latest additions including Cyber Quest and Neon Jumper.</p>
+                        <a href="#" class="news-link" onclick="openNewsDetails('news1')">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="News Image" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">July 15, 2025</div>
+                        <h3 class="news-title">Achievement System Now Live</h3>
+                        <p class="news-excerpt">Our new achievement system is now live! Earn badges and rewards as you play your favorite games and complete challenges.</p>
+                        <a href="#" class="news-link" onclick="openNewsDetails('news2')">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1628483368890-4f4b8df2cb65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="News Image" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">July 10, 2025</div>
+                        <h3 class="news-title">Summer Gaming Tournament Announced</h3>
+                        <p class="news-excerpt">Join our Summer Gaming Tournament starting August 1st. Compete in your favorite games for a chance to win amazing prizes.</p>
+                        <a href="#" class="news-link" onclick="openNewsDetails('news3')">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div id="recommendationsSection" style="display: none;">
+            <h2 class="section-title">Recommended For You</h2>
+            <div class="recommendations-container">
+                <div class="recommendations-intro">
+                    <p>Based on your play history and preferences, we think you'll enjoy these games:</p>
+                </div>
+                <div class="recommended-games" id="recommendedGames">
+                    <!-- Recommendations will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Forum Section -->
+        <div id="forumSection" style="display: none;">
+            <h2 class="section-title">Community Forum</h2>
+            
+            <!-- Categories View -->
+            <div id="categoriesView" class="forum-view">
+                <div class="forum-header">
+                    <h3>Forum Categories</h3>
+                </div>
+                <div class="forum-categories" id="forumCategories">
+                    <!-- Categories will be dynamically inserted here -->
+                </div>
+            </div>
+            
+            <!-- Threads View -->
+            <div id="threadsView" class="forum-view" style="display: none;">
+                <div class="forum-header">
+                    <button id="backToCategories" class="forum-back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Categories
+                    </button>
+                    <h3 id="categoryTitle">Category Name</h3>
+                    <button id="newThreadBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Thread
+                    </button>
+                </div>
+                <div class="forum-threads" id="forumThreads">
+                    <!-- Threads will be dynamically inserted here -->
+                </div>
+            </div>
+            
+            <!-- Thread View -->
+            <div id="threadView" class="forum-view" style="display: none;">
+                <div class="forum-header">
+                    <button id="backToThreads" class="forum-back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Threads
+                    </button>
+                    <h3 id="threadTitle">Thread Title</h3>
+                </div>
+                <div class="forum-thread-content" id="threadContent">
+                    <!-- Thread content will be dynamically inserted here -->
+                </div>
+                <div id="commentFormContainer" class="comment-form-container">
+                    <form id="newCommentForm" class="comment-form">
+                        <h4>Add a Comment</h4>
+                        <div class="form-group">
+                            <div class="rich-text-toolbar">
+                                <button type="button" class="rich-text-btn" onclick="formatCommentText('bold')"><i class="fas fa-bold"></i></button>
+                                <button type="button" class="rich-text-btn" onclick="formatCommentText('italic')"><i class="fas fa-italic"></i></button>
+                                <button type="button" class="rich-text-btn" onclick="formatCommentText('link')"><i class="fas fa-link"></i></button>
+                                <button type="button" class="rich-text-btn" onclick="formatCommentText('emoji')"><i class="fas fa-smile"></i></button>
+                            </div>
+                            <textarea id="commentContent" placeholder="Write your comment here... Use the formatting tools above to style your text." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Post Comment
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div id="achievementsSection" style="display: none;">
+            <h2 class="section-title">Achievements</h2>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="achievement-title">First Victory</h3>
+                    <p class="achievement-description">Win your first game on LunaX Portal.</p>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar" style="width: 100%;"></div>
+                    </div>
+                    <div class="achievement-status">
+                        <span>Completed</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="achievement-title">On Fire</h3>
+                    <p class="achievement-description">Play games for 5 consecutive days.</p>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar" style="width: 60%;"></div>
+                    </div>
+                    <div class="achievement-status">
+                        <span>In Progress</span>
+                        <span>3/5</span>
+                    </div>
+                </div>
+                <div class="achievement-card achievement-locked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="achievement-title">Gaming Royalty</h3>
+                    <p class="achievement-description">Reach the top of the leaderboard in any game.</p>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <div class="achievement-status">
+                        <span>Locked</span>
+                        <span>0%</span>
+                    </div>
+                </div>
+                <div class="achievement-card achievement-locked">
+                    <div class="achievement-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="achievement-title">Game Master</h3>
+                    <p class="achievement-description">Play all games in the arcade category.</p>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar" style="width: 25%;"></div>
+                    </div>
+                    <div class="achievement-status">
+                        <span>In Progress</span>
+                        <span>1/4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link discord"><i class="fab fa-discord"></i></a>
+        </div>
+        <div class="footer-links">
+            <a href="#" class="footer-link" onclick="openModal('aboutModal')">About</a>
+            <a href="#" class="footer-link" onclick="openModal('contactModal')">Contact</a>
+            <a href="#" class="footer-link" onclick="openModal('partnersModal')">Partners</a>
+            <a href="#" class="footer-link" onclick="openModal('creditsModal')">Credits</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+            <a href="#" class="footer-link">Terms of Service</a>
+        </div>
+        <p>© 2025 LunaX Gaming Portal | Powered by DayDropStudios</p>
+    </footer>
+
+    <div class="notification" id="notification">
+        <div class="notification-title">Game Loaded</div>
+        <div class="notification-message" id="notificationMessage">Ready to play!</div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal('aboutModal')"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 class="modal-title">About LunaX</h2>
+                <p class="modal-subtitle">Your Gateway to Unblocked Gaming</p>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem; line-height: 1.8; color: #aaa;">LunaX is a cutting-edge gaming portal designed to provide seamless access to a wide variety of games without restrictions. Our platform features a carefully curated collection of classic arcade games, puzzles, action adventures, and multiplayer experiences.</p>
+                
+                <p style="margin-bottom: 1rem; line-height: 1.8; color: #aaa;">Founded in 2023 by a team of passionate gamers and developers, LunaX aims to create a community where players can enjoy their favorite games, track achievements, and connect with fellow gaming enthusiasts.</p>
+                
+                <h3 style="font-size: 1.3rem; color: #fff; margin: 1.5rem 0 1rem;">Our Mission</h3>
+                <p style="margin-bottom: 1rem; line-height: 1.8; color: #aaa;">To provide a secure, accessible, and enjoyable gaming experience for everyone, regardless of location or device. We believe that gaming should be available to all, and we're committed to breaking down barriers that prevent people from enjoying quality games.</p>
+                
+                <h3 style="font-size: 1.3rem; color: #fff; margin: 1.5rem 0 1rem;">Features</h3>
+                <ul style="list-style: none; padding: 0; margin-bottom: 1.5rem;">
+                    <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check" style="color: #00c6ff; position: absolute; left: 0; top: 5px;"></i>
+                        Unblocked access to a diverse game library
+                    </li>
+                    <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check" style="color: #00c6ff; position: absolute; left: 0; top: 5px;"></i>
+                        Achievement system to track your progress
+                    </li>
+                    <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check" style="color: #00c6ff; position: absolute; left: 0; top: 5px;"></i>
+                        Regular updates with new games and features
+                    </li>
+                    <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check" style="color: #00c6ff; position: absolute; left: 0; top: 5px;"></i>
+                        Community events and tournaments
+                    </li>
+                    <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check" style="color: #00c6ff; position: absolute; left: 0; top: 5px;"></i>
+                        Cross-device compatibility
+                    </li>
+                </ul>
+                
+                <h3 style="font-size: 1.3rem; color: #fff; margin: 1.5rem 0 1rem;">Join Our Community</h3>
+                <p style="line-height: 1.8; color: #aaa;">Become part of the LunaX gaming community today. Create an account to save your progress, earn achievements, and participate in exclusive events and tournaments.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeModal('aboutModal')">Close</button>
+                <button class="modal-btn modal-btn-primary" onclick="closeModal('aboutModal')">Join Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credits Modal -->
+    <div class="modal-overlay" id="creditsModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal('creditsModal')"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 class="modal-title">Credits</h2>
+                <p class="modal-subtitle">The Team Behind LunaX</p>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 1rem;">Development Team</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-code" style="font-size: 2rem; color: #00c6ff;"></i>
+                            </div>
+                            <h4 style="color: #fff; margin-bottom: 0.5rem;">Alex Chen</h4>
+                            <p style="color: #aaa; font-size: 0.9rem;">Lead Developer</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-paint-brush" style="font-size: 2rem; color: #ff416c;"></i>
+                            </div>
+                            <h4 style="color: #fff; margin-bottom: 0.5rem;">Sarah Johnson</h4>
+                            <p style="color: #aaa; font-size: 0.9rem;">UI/UX Designer</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-gamepad" style="font-size: 2rem; color: #4a00e0;"></i>
+                            </div>
+                            <h4 style="color: #fff; margin-bottom: 0.5rem;">Marcus Lee</h4>
+                            <p style="color: #aaa; font-size: 0.9rem;">Game Developer</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-server" style="font-size: 2rem; color: #11998e;"></i>
+                            </div>
+                            <h4 style="color: #fff; margin-bottom: 0.5rem;">Priya Patel</h4>
+                            <p style="color: #aaa; font-size: 0.9rem;">Backend Engineer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 1rem;">Special Thanks</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                            <i class="fas fa-star" style="color: #ffdd00; position: absolute; left: 0; top: 5px;"></i>
+                            Our amazing beta testers
+                        </li>
+                        <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                            <i class="fas fa-star" style="color: #ffdd00; position: absolute; left: 0; top: 5px;"></i>
+                            The open-source community
+                        </li>
+                        <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                            <i class="fas fa-star" style="color: #ffdd00; position: absolute; left: 0; top: 5px;"></i>
+                            Our partners and sponsors
+                        </li>
+                        <li style="margin-bottom: 0.8rem; color: #aaa; padding-left: 1.5rem; position: relative;">
+                            <i class="fas fa-star" style="color: #ffdd00; position: absolute; left: 0; top: 5px;"></i>
+                            You, our amazing users!
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 1rem;">Technologies Used</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                        <span style="background-color: #333; color: #aaa; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem;">HTML5</span>
+                        <span style="background-color: #333; color: #aaa; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem;">CSS3</span>
+                        <span style="background-color: #333; color: #aaa; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem;">JavaScript</span>
+                        <span style="background-color: #333; color: #aaa; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem;">Node.js</span>
+                        <span style="background-color: #333; color: #aaa; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem;">WebGL</span>
+                        <span style="background-color: #333; color: #aaa; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem;">Firebase</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeModal('creditsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal('contactModal')"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 class="modal-title">Contact Us</h2>
+                <p class="modal-subtitle">We'd Love to Hear From You</p>
+            </div>
+            <div class="modal-body">
+                <form class="contact-form" onsubmit="event.preventDefault(); submitContactForm();">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" class="form-input" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="Your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" id="subject" class="form-input" placeholder="Subject of your message" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" class="form-input form-textarea" placeholder="Your message" required></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                        <button type="button" class="modal-btn" onclick="closeModal('contactModal')">Cancel</button>
+                        <button type="submit" class="modal-btn modal-btn-primary">Send Message</button>
+                    </div>
+                </form>
+                
+                <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 2rem;">
+                    <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 1rem;">Other Ways to Reach Us</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #333; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-envelope" style="color: #00c6ff;"></i>
+                            </div>
+                            <div>
+                                <h4 style="color: #fff; margin-bottom: 0.2rem; font-size: 1rem;">Email</h4>
+                                <p style="color: #aaa; font-size: 0.9rem;">support@lunaxgames.com</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #333; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-headset" style="color: #ff416c;"></i>
+                            </div>
+                            <div>
+                                <h4 style="color: #fff; margin-bottom: 0.2rem; font-size: 1rem;">Support</h4>
+                                <p style="color: #aaa; font-size: 0.9rem;">help.lunaxgames.com</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #333; display: flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-discord" style="color: #5865f2;"></i>
+                            </div>
+                            <div>
+                                <h4 style="color: #fff; margin-bottom: 0.2rem; font-size: 1rem;">Discord</h4>
+                                <p style="color: #aaa; font-size: 0.9rem;">discord.gg/lunaxgames</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partners Modal -->
+    <div class="modal-overlay" id="partnersModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal('partnersModal')"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 class="modal-title">Our Partners</h2>
+                <p class="modal-subtitle">Companies We Work With</p>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 2rem; line-height: 1.8; color: #aaa;">LunaX is proud to partner with these amazing companies and organizations that help us deliver the best gaming experience to our users.</p>
+                
+                <div class="partners-grid">
+                    <div class="partner-card">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-bolt" style="font-size: 2.5rem; color: #ffdd00;"></i>
+                        </div>
+                        <h3 class="partner-name">NeonTech Studios</h3>
+                        <p class="partner-description">Leading game development studio specializing in arcade and action games.</p>
+                    </div>
+                    <div class="partner-card">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-cloud" style="font-size: 2.5rem; color: #00c6ff;"></i>
+                        </div>
+                        <h3 class="partner-name">CloudServe</h3>
+                        <p class="partner-description">Cloud infrastructure provider ensuring smooth gameplay and minimal latency.</p>
+                    </div>
+                    <div class="partner-card">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: #4a00e0;"></i>
+                        </div>
+                        <h3 class="partner-name">CyberShield</h3>
+                        <p class="partner-description">Cybersecurity experts keeping our platform and users safe.</p>
+                    </div>
+                    <div class="partner-card">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #333; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-rocket" style="font-size: 2.5rem; color: #ff416c;"></i>
+                        </div>
+                        <h3 class="partner-name">LaunchPad Games</h3>
+                        <p class="partner-description">Indie game publisher bringing fresh and innovative titles to our platform.</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <h3 style="font-size: 1.3rem; color: #fff; margin-bottom: 1rem;">Interested in Partnering With Us?</h3>
+                    <p style="margin-bottom: 1.5rem; line-height: 1.8; color: #aaa;">If you're a game developer, publisher, or service provider interested in partnering with LunaX, we'd love to hear from you!</p>
+                    <button class="modal-btn modal-btn-primary" onclick="closeModal('partnersModal'); openModal('contactModal');">Contact Us</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeModal('partnersModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Details Modal -->
+    <div class="modal-overlay" id="gameDetailsModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal('gameDetailsModal')"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="gameDetailsTitle">Game Title</h2>
+            </div>
+            <div class="modal-body">
+                <div class="game-details-container">
+                    <div>
+                        <img src="" alt="Game Image" class="game-details-image" id="gameDetailsImage">
+                    </div>
+                    <div class="game-details-info">
+                        <div class="game-details-meta">
+                            <div class="game-details-rating" id="gameDetailsRating"><i class="fas fa-star"></i> 4.5</div>
+                            <div class="game-details-category" id="gameDetailsCategory">Category</div>
+                            <div class="game-details-plays" id="gameDetailsPlays">10K plays</div>
+                            <div class="game-details-date" id="gameDetailsDate">Added July 2025</div>
+                        </div>
+                        <p class="game-details-description" id="gameDetailsDescription">Game description goes here.</p>
+                        <button class="play-btn" style="margin-bottom: 1.5rem;" onclick="playGame(currentGame); closeModal('gameDetailsModal');">Play Now</button>
+                        
+                        <div class="game-details-section">
+                            <h3 class="game-details-section-title">Controls</h3>
+                            <div class="controls-list" id="gameDetailsControls">
+                                <!-- Controls will be added dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-details-section" style="margin-top: 2rem;">
+                    <h3 class="game-details-section-title">Screenshots</h3>
+                    <div class="screenshots-grid" id="gameDetailsScreenshots">
+                        <!-- Screenshots will be added dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeModal('gameDetailsModal')">Close</button>
+                <button class="modal-btn modal-btn-primary" onclick="playGame(currentGame); closeModal('gameDetailsModal');">Play Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container" id="authModal">
+            <button class="modal-close" onclick="LunaXAuth.authUIController.hideAuthModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="loginTab">Login</div>
+                <div class="auth-tab" id="registerTab">Register</div>
+            </div>
+            
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="auth-message" id="loginMessage"></div>
+                    
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-checkbox">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    
+                    <div class="auth-separator">
+                        <span>OR</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <div id="googleLoginBtn" class="google-btn"></div>
+                    </div>
+                    
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="#" id="switchToRegister">Register</a></p>
+                        <p><a href="#" onclick="showForgotPassword()">Forgot Password?</a></p>
+                    </div>
+                </form>
+                
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <div class="auth-message" id="registerMessage"></div>
+                    
+                    <div class="form-group">
+                        <label for="registerUsername">Username</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="registerUsername" placeholder="Choose a username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerPassword" placeholder="Create a password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-checkbox">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <label for="agreeTerms">I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a></label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    
+                    <div class="auth-separator">
+                        <span>OR</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <div id="googleRegisterBtn" class="google-btn"></div>
+                    </div>
+                    
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Thread Modal -->
+    <div class="modal-overlay" id="newThreadModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('active'); document.getElementById('newThreadModal').classList.remove('active');">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2>Create New Thread</h2>
+            </div>
+            
+            <div class="modal-body">
+                <form id="newThreadForm">
+                    <input type="hidden" id="threadCategory" value="">
+                    
+                    <div class="form-group">
+                        <label for="threadTitle">Title</label>
+                        <input type="text" id="threadTitle" placeholder="Enter thread title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="threadContent">Content</label>
+                        <div class="rich-text-toolbar">
+                            <button type="button" class="rich-text-btn" onclick="formatText('bold')"><i class="fas fa-bold"></i></button>
+                            <button type="button" class="rich-text-btn" onclick="formatText('italic')"><i class="fas fa-italic"></i></button>
+                            <button type="button" class="rich-text-btn" onclick="formatText('underline')"><i class="fas fa-underline"></i></button>
+                            <button type="button" class="rich-text-btn" onclick="formatText('list')"><i class="fas fa-list-ul"></i></button>
+                            <button type="button" class="rich-text-btn" onclick="formatText('heading')"><i class="fas fa-heading"></i></button>
+                            <button type="button" class="rich-text-btn" onclick="formatText('link')"><i class="fas fa-link"></i></button>
+                        </div>
+                        <textarea id="threadContent" placeholder="Write your post here... Use the formatting tools above to style your text." rows="8" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-plus"></i> Create Thread
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Avatar Selection Modal -->
+    <div class="modal-overlay" id="avatarModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="document.getElementById('avatarModal').classList.remove('active'); document.getElementById('modalOverlay').classList.remove('active');">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2>Choose Your Avatar</h2>
+            </div>
+            
+            <div class="modal-body">
+                <p class="avatar-instructions">Select one of the avatars below or enter a custom URL:</p>
+                
+                <div class="avatar-options" id="avatarOptions">
+                    <!-- Avatar options will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="modal-overlay" id="userProfileModal">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal('userProfileModal')">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2>My Profile</h2>
+            </div>
+            
+            <div class="modal-body">
+                <div class="user-profile-details">
+                    <div class="user-profile-avatar">
+                        <img id="profileAvatar" src="" alt="User Avatar">
+                        <button class="btn btn-small" id="changeAvatarBtn">Change Avatar</button>
+                    </div>
+                    
+                    <div class="user-profile-info">
+                        <form id="profileForm">
+                            <div class="form-group">
+                                <label for="profileUsername">Username</label>
+                                <input type="text" id="profileUsername" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileEmail">Email</label>
+                                <input type="email" id="profileEmail">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileBio">Bio</label>
+                                <textarea id="profileBio" placeholder="Tell us about yourself"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="user-stats">
+                    <h3>Your Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-gamepad"></i>
+                            <span class="stat-value" id="gamesPlayed">0</span>
+                            <span class="stat-label">Games Played</span>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-trophy"></i>
+                            <span class="stat-value" id="achievementsEarned">0</span>
+                            <span class="stat-label">Achievements</span>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-star"></i>
+                            <span class="stat-value" id="totalPoints">0</span>
+                            <span class="stat-label">Points</span>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-clock"></i>
+                            <span class="stat-value" id="playTime">0h</span>
+                            <span class="stat-label">Play Time</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="auth.js"></script>
     <script src="recommendations.js"></script>
