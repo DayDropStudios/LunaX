@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LunaX Gaming Portal - Games Library</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/games.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts - Cyberpunk style -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="cyberpunk-theme">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <a href="index.html">
+                <img src="assets/images/lunax-logo.png" alt="LunaX Logo">
+                <span>LunaX</span>
+            </a>
+        </div>
+        <div class="navbar-links">
+            <a href="index.html">Home</a>
+            <a href="games.html" class="active">Games</a>
+            <a href="forum.html">Forum</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="navbar-actions">
+            <button id="theme-toggle" aria-label="Toggle dark/light mode">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="user-menu">
+                <img src="assets/images/default-avatar.png" alt="User Avatar" class="avatar" id="user-avatar">
+                <div class="user-dropdown">
+                    <a href="profile.html">My Profile</a>
+                    <a href="settings.html">Settings</a>
+                    <a href="#" id="logout-btn">Logout</a>
+                </div>
+            </div>
+        </div>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section games-hero">
+        <div class="hero-content">
+            <h1>Game Library</h1>
+            <p>Discover, play, and connect with friends through our extensive collection of games</p>
+            <div class="search-container">
+                <input type="text" id="game-search" placeholder="Search games...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="games-container">
+        <!-- Sidebar with Filters -->
+        <aside class="games-sidebar">
+            <div class="filter-section">
+                <h3>Categories</h3>
+                <div class="filter-options categories-filter">
+                    <label><input type="checkbox" value="action"> Action</label>
+                    <label><input type="checkbox" value="adventure"> Adventure</label>
+                    <label><input type="checkbox" value="rpg"> RPG</label>
+                    <label><input type="checkbox" value="strategy"> Strategy</label>
+                    <label><input type="checkbox" value="simulation"> Simulation</label>
+                    <label><input type="checkbox" value="sports"> Sports</label>
+                    <label><input type="checkbox" value="puzzle"> Puzzle</label>
+                    <label><input type="checkbox" value="shooter"> Shooter</label>
+                    <label><input type="checkbox" value="indie"> Indie</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Rating</h3>
+                <div class="filter-options rating-filter">
+                    <label><input type="radio" name="rating" value="5"> 5 Stars & Up</label>
+                    <label><input type="radio" name="rating" value="4"> 4 Stars & Up</label>
+                    <label><input type="radio" name="rating" value="3"> 3 Stars & Up</label>
+                    <label><input type="radio" name="rating" value="2"> 2 Stars & Up</label>
+                    <label><input type="radio" name="rating" value="1"> 1 Star & Up</label>
+                    <label><input type="radio" name="rating" value="all" checked> All Ratings</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Collections</h3>
+                <div class="filter-options collections-filter">
+                    <label><input type="checkbox" value="favorites"> My Favorites</label>
+                    <label><input type="checkbox" value="recently-played"> Recently Played</label>
+                    <label><input type="checkbox" value="friends-playing"> Friends Playing</label>
+                    <label><input type="checkbox" value="new-releases"> New Releases</label>
+                    <label><input type="checkbox" value="trending"> Trending</label>
+                </div>
+            </div>
+
+            <button id="reset-filters" class="btn-reset">Reset Filters</button>
+        </aside>
+
+        <!-- Games Grid -->
+        <section class="games-grid-container">
+            <div class="games-header">
+                <h2>All Games</h2>
+                <div class="view-options">
+                    <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
+                    <select id="sort-options">
+                        <option value="popular">Most Popular</option>
+                        <option value="newest">Newest First</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Recently Played Section -->
+            <div class="games-section recently-played">
+                <h3>Recently Played</h3>
+                <div class="games-carousel">
+                    <!-- Game cards will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Friends' Activity Section -->
+            <div class="games-section friends-activity">
+                <h3>Friends' Activity</h3>
+                <div class="activity-feed">
+                    <!-- Activity items will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Main Games Grid -->
+            <div class="games-grid" id="games-grid">
+                <!-- Game cards will be dynamically inserted here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="pagination-btn" data-page="prev"><i class="fas fa-chevron-left"></i></button>
+                <div class="pagination-numbers">
+                    <button class="pagination-btn active" data-page="1">1</button>
+                    <button class="pagination-btn" data-page="2">2</button>
+                    <button class="pagination-btn" data-page="3">3</button>
+                    <span>...</span>
+                    <button class="pagination-btn" data-page="10">10</button>
+                </div>
+                <button class="pagination-btn" data-page="next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Game Detail Modal -->
+    <div class="modal" id="game-detail-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="game-detail-container">
+                <!-- Game details will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="assets/images/lunax-logo.png" alt="LunaX Logo">
+                <span>LunaX Gaming</span>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Press</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <a href="#">Support</a>
+                    <a href="#">Developers</a>
+                    <a href="#">Documentation</a>
+                    <a href="#">Status</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="#">GDPR</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-twitch"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LunaX Gaming. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/gameLibrary.js"></script>
+    <script src="js/social.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/performance.js"></script>
+    <script src="js/responsive.js"></script>
+    <script src="js/advanced.js"></script>
+    <script src="js/games.js"></script>
+</body>
+</html>
