@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LunaX - Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Core Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+
+        :root {
+            /* Normal Theme Variables (Default) */
+            --bg-primary: #121212;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-tertiary: #999999;
+            --accent-primary: #00c6ff;
+            --accent-secondary: #0072ff;
+            --border-color: #333333;
+            --card-bg: rgba(30, 30, 30, 0.8);
+            --modal-bg: rgba(25, 25, 25, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --header-bg: rgba(18, 18, 18, 0.9);
+            --sidebar-bg: #1a1a1a;
+            --matrix-opacity: 0.15;
+            --cursor-type: 'default';
+            --animation-speed: 1;
+            --sound-enabled: 'off';
+            --notifications-enabled: 'on';
+        }
+
+        [data-theme="white"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #eeeeee;
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --text-tertiary: #777777;
+            --accent-primary: #0072ff;
+            --accent-secondary: #00c6ff;
+            --border-color: #dddddd;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --modal-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --sidebar-bg: #f5f5f5;
+            --matrix-opacity: 0.05;
+        }
+
+        [data-theme="light-blue"] {
+            --bg-primary: #e6f7ff;
+            --bg-secondary: #d1ebff;
+            --bg-tertiary: #c0e0ff;
+            --text-primary: #0a3d62;
+            --text-secondary: #1e5b8d;
+            --text-tertiary: #3282b8;
+            --accent-primary: #0984e3;
+            --accent-secondary: #74b9ff;
+            --border-color: #a6d0f5;
+            --card-bg: rgba(230, 247, 255, 0.9);
+            --modal-bg: rgba(230, 247, 255, 0.95);
+            --shadow-color: rgba(10, 61, 98, 0.1);
+            --header-bg: rgba(230, 247, 255, 0.9);
+            --sidebar-bg: #d1ebff;
+            --matrix-opacity: 0.05;
+        }
+
+        [data-theme="pink"] {
+            --bg-primary: #fff0f5;
+            --bg-secondary: #ffe0eb;
+            --bg-tertiary: #ffd1e0;
+            --text-primary: #8e2de2;
+            --text-secondary: #a537fd;
+            --text-tertiary: #bb52ff;
+            --accent-primary: #ff6b9b;
+            --accent-secondary: #ff9ac9;
+            --border-color: #ffb8dd;
+            --card-bg: rgba(255, 240, 245, 0.9);
+            --modal-bg: rgba(255, 240, 245, 0.95);
+            --shadow-color: rgba(142, 45, 226, 0.1);
+            --header-bg: rgba(255, 240, 245, 0.9);
+            --sidebar-bg: #ffe0eb;
+            --matrix-opacity: 0.05;
+        }
+
+        [data-theme="purple"] {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #372363;
+            --bg-tertiary: #432b77;
+            --text-primary: #f8f7ff;
+            --text-secondary: #e4e0ff;
+            --text-tertiary: #c9c0ff;
+            --accent-primary: #9d65ff;
+            --accent-secondary: #ba8fff;
+            --border-color: #5a3a8a;
+            --card-bg: rgba(45, 27, 78, 0.9);
+            --modal-bg: rgba(45, 27, 78, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --header-bg: rgba(45, 27, 78, 0.9);
+            --sidebar-bg: #372363;
+            --matrix-opacity: 0.15;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-tertiary), var(--bg-secondary));
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            line-height: 1.6;
+        }
+
+        @keyframes gradientBackground {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Background Effects */
+        #matrix, #snow, #rain, #space {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #matrix.active {
+            opacity: var(--matrix-opacity);
+        }
+
+        #snow.active, #rain.active, #space.active {
+            opacity: 0.5;
+        }
+
+        /* Cursor Styles */
+        .cursor-default {
+            cursor: default;
+        }
+
+        .cursor-y2k {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23FF66FF" stroke="%23FFFFFF" stroke-width="2"/><circle cx="10" cy="12" r="3" fill="%23FFFFFF"/><circle cx="22" cy="12" r="3" fill="%23FFFFFF"/><path d="M10 22 Q16 26 22 22" stroke="%23FFFFFF" stroke-width="2" fill="none"/></svg>'), auto;
+        }
+
+        .cursor-glove {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M12,8 L16,2 L20,8 L24,6 L24,14 C24,20 20,24 16,28 C12,24 8,20 8,14 L8,6 L12,8 Z" fill="%23FFFFFF" stroke="%23000000" stroke-width="1"/><circle cx="16" cy="14" r="6" fill="%23FFFFFF" stroke="%23000000" stroke-width="1"/></svg>'), auto;
+        }
+
+        .cursor-star {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="16,2 19.5,12.5 30,12.5 21.5,19 25,30 16,23.5 7,30 10.5,19 2,12.5 12.5,12.5" fill="%23000000"/></svg>'), auto;
+        }
+
+        /* Cursor Trail */
+        .cursor-trail {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.7;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, opacity 0.5s;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 100%;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar:hover {
+            width: 200px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .sidebar-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            width: 100%;
+            height: 40px;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-btn i {
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            width: 40px;
+            text-align: center;
+        }
+
+        .sidebar-btn span {
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+
+        .sidebar:hover .sidebar-btn span {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-btn:hover, .sidebar-btn.active {
+            color: var(--accent-primary);
+            background-color: rgba(0, 198, 255, 0.1);
+        }
+
+        .sidebar-btn:hover i, .sidebar-btn.active i {
+            text-shadow: 0 0 10px var(--accent-primary);
+        }
+
+        .sidebar-btn::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: var(--accent-primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-btn:hover::after, .sidebar-btn.active::after {
+            transform: scaleY(1);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 90;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 60px;
+        }
+
+        .logo {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: calc(100% - 60px);
+            padding-left: 60px;
+            padding-top: 100px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        .settings-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .settings-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            animation: cardAppear 0.6s ease both;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), transparent);
+        }
+
+        .settings-card p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .theme-option {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100px;
+            border: 2px solid transparent;
+        }
+
+        .theme-option.active {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-primary);
+        }
+
+        .theme-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 100%;
+        }
+
+        .theme-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .normal-theme {
+            background: linear-gradient(-45deg, #121212, #1a1a1a, #222222);
+        }
+
+        .white-theme {
+            background: linear-gradient(-45deg, #ffffff, #f5f5f5, #eeeeee);
+        }
+
+        .light-blue-theme {
+            background: linear-gradient(-45deg, #e6f7ff, #d1ebff, #c0e0ff);
+        }
+
+        .pink-theme {
+            background: linear-gradient(-45deg, #fff0f5, #ffe0eb, #ffd1e0);
+        }
+
+        .purple-theme {
+            background: linear-gradient(-45deg, #2d1b4e, #372363, #432b77);
+        }
+
+        .cursor-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .cursor-option {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100px;
+            border: 2px solid transparent;
+        }
+
+        .cursor-option.active {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-primary);
+        }
+
+        .cursor-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .cursor-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-primary);
+        }
+
+        .cursor-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .default-cursor-preview {
+            background-color: var(--bg-secondary);
+        }
+
+        .y2k-cursor-preview {
+            background: linear-gradient(45deg, #ff66ff, #66ffff);
+        }
+
+        .glove-cursor-preview {
+            background-color: #ffffff;
+        }
+
+        .star-cursor-preview {
+            background-color: #000000;
+        }
+
+        .particle-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .particle-option {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100px;
+            border: 2px solid transparent;
+        }
+
+        .particle-option.active {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-primary);
+        }
+
+        .particle-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .particle-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-primary);
+        }
+
+        .particle-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .none-particle-preview {
+            background-color: var(--bg-secondary);
+        }
+
+        .matrix-particle-preview {
+            background-color: #000;
+        }
+
+        .snow-particle-preview {
+            background-color: #14213d;
+        }
+
+        .rain-particle-preview {
+            background-color: #023e8a;
+        }
+
+        .space-particle-preview {
+            background-color: #03071e;
+        }
+
+        .tab-cloaker-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tab-option {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100px;
+            border: 2px solid transparent;
+        }
+
+        .tab-option.active {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-primary);
+        }
+
+        .tab-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .tab-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-primary);
+        }
+
+        .tab-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Additional Settings */
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-label {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-tertiary);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--text-primary);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-primary);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--accent-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        /* Range Slider */
+        .range-slider {
+            -webkit-appearance: none;
+            width: 150px;
+            height: 8px;
+            border-radius: 5px;
+            background: var(--bg-tertiary);
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+
+        .range-slider:hover {
+            opacity: 1;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+        }
+
+        .range-value {
+            margin-left: 10px;
+            min-width: 30px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0, 198, 255, 0.3);
+            margin-top: 1rem;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 198, 255, 0.4);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .footer {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+            padding-left: 60px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-tertiary);
+            animation: fadeIn 1s ease 1s both;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+
+        .twitter:hover {
+            background-color: #1da1f2;
+            border-color: #1da1f2;
+            box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+        }
+
+        .facebook:hover {
+            background-color: #1877f2;
+            border-color: #1877f2;
+            box-shadow: 0 5px 15px rgba(24, 119, 242, 0.4);
+        }
+
+        .instagram:hover {
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+            border-color: #c13584;
+            box-shadow: 0 5px 15px rgba(193, 53, 132, 0.4);
+        }
+
+        .discord:hover {
+            background-color: #7289da;
+            border-color: #7289da;
+            box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px var(--shadow-color);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--modal-bg);
+            border-left: 4px solid var(--accent-primary);
+            padding: 15px 20px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .notification-message {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 50px;
+            }
+            
+            .header {
+                padding-left: 50px;
+            }
+            
+            .container {
+                padding-left: 50px;
+                width: calc(100% - 50px);
+            }
+            
+            .footer {
+                padding-left: 50px;
+            }
+            
+            .logo { 
+                font-size: 2rem; 
+            }
+            
+            .theme-options, .cursor-options, .tab-cloaker-options, .particle-options {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                bottom: 0;
+                top: auto;
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                padding: 0 1rem;
+                justify-content: space-around;
+                z-index: 1000;
+            }
+            
+            .sidebar:hover {
+                width: 100%;
+                height: auto;
+            }
+            
+            .sidebar-nav {
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0.5rem 0;
+                gap: 0;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .sidebar-btn {
+                width: auto;
+                justify-content: center;
+            }
+            
+            .sidebar-btn span {
+                display: none;
+            }
+            
+            .header {
+                padding-left: 1rem;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                width: 100%;
+                padding-bottom: 70px;
+            }
+            
+            .footer {
+                padding-left: 1rem;
+                padding-bottom: 70px;
+            }
+            
+            .theme-switch {
+                top: 20px;
+                right: 20px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .theme-options, .cursor-options, .tab-cloaker-options, .particle-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .setting-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <canvas id="snow"></canvas>
+    <canvas id="rain"></canvas>
+    <canvas id="space"></canvas>
+    
+    <div class="theme-switch" id="themeSwitch">
+        <i class="fas fa-moon"></i>
+    </div>
+    
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <button class="sidebar-btn" onclick="window.location.href='index.html'" title="Home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="sidebar-btn" onclick="window.location.href='games.html'" title="Games">
+                <i class="fas fa-gamepad"></i>
+                <span>Games</span>
+            </button>
+            <button class="sidebar-btn" onclick="window.location.href='apps.html'" title="Apps">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Apps</span>
+            </button>
+            <button class="sidebar-btn" onclick="window.location.href='about.html'" title="About">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </button>
+            <button class="sidebar-btn" onclick="window.location.href='contact.html'" title="Contact">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </button>
+            <button class="sidebar-btn active" onclick="window.location.href='settings.html'" title="Settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </button>
+        </nav>
+    </div>
+
+    <header class="header">
+        <h1 class="logo">LunaX</h1>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Settings</h2>
+        
+        <div class="settings-container">
+            <!-- Theme Settings -->
+            <div class="settings-card">
+                <h3>Theme Settings</h3>
+                <p>Choose from our selection of themes to customize your experience.</p>
+                
+                <div class="theme-options">
+                    <div class="theme-option active" data-theme="normal">
+                        <div class="theme-preview normal-theme"></div>
+                        <div class="theme-name">Normal</div>
+                    </div>
+                    
+                    <div class="theme-option" data-theme="white">
+                        <div class="theme-preview white-theme"></div>
+                        <div class="theme-name">White</div>
+                    </div>
+                    
+                    <div class="theme-option" data-theme="light-blue">
+                        <div class="theme-preview light-blue-theme"></div>
+                        <div class="theme-name">Light Blue</div>
+                    </div>
+                    
+                    <div class="theme-option" data-theme="pink">
+                        <div class="theme-preview pink-theme"></div>
+                        <div class="theme-name">Pink</div>
+                    </div>
+                    
+                    <div class="theme-option" data-theme="purple">
+                        <div class="theme-preview purple-theme"></div>
+                        <div class="theme-name">Purple</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cursor Settings -->
+            <div class="settings-card">
+                <h3>Cursor Settings</h3>
+                <p>Choose a custom cursor with particle effects to enhance your experience.</p>
+                
+                <div class="cursor-options">
+                    <div class="cursor-option active" data-cursor="default">
+                        <div class="cursor-preview default-cursor-preview">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div class="cursor-name">Default</div>
+                    </div>
+                    
+                    <div class="cursor-option" data-cursor="y2k">
+                        <div class="cursor-preview y2k-cursor-preview">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="cursor-name">Y2K Style</div>
+                    </div>
+                    
+                    <div class="cursor-option" data-cursor="glove">
+                        <div class="cursor-preview glove-cursor-preview">
+                            <i class="fas fa-hand-pointer"></i>
+                        </div>
+                        <div class="cursor-name">Mickey Glove</div>
+                    </div>
+                    
+                    <div class="cursor-option" data-cursor="star">
+                        <div class="cursor-preview star-cursor-preview">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="cursor-name">Black Star</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Particle Effects -->
+            <div class="settings-card">
+                <h3>Background Effects</h3>
+                <p>Choose a background effect to enhance your visual experience.</p>
+                
+                <div class="particle-options">
+                    <div class="particle-option" data-particle="none">
+                        <div class="particle-preview none-particle-preview">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="particle-name">None</div>
+                    </div>
+                    
+                    <div class="particle-option active" data-particle="matrix">
+                        <div class="particle-preview matrix-particle-preview">
+                            <i class="fas fa-terminal"></i>
+                        </div>
+                        <div class="particle-name">Matrix</div>
+                    </div>
+                    
+                    <div class="particle-option" data-particle="snow">
+                        <div class="particle-preview snow-particle-preview">
+                            <i class="fas fa-snowflake"></i>
+                        </div>
+                        <div class="particle-name">Snow</div>
+                    </div>
+                    
+                    <div class="particle-option" data-particle="rain">
+                        <div class="particle-preview rain-particle-preview">
+                            <i class="fas fa-cloud-rain"></i>
+                        </div>
+                        <div class="particle-name">Rain</div>
+                    </div>
+                    
+                    <div class="particle-option" data-particle="space">
+                        <div class="particle-preview space-particle-preview">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="particle-name">Space</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Cloaker -->
+            <div class="settings-card">
+                <h3>Tab Cloaker</h3>
+                <p>Disguise this website as a school-related site to avoid suspicion.</p>
+                
+                <div class="tab-cloaker-options">
+                    <div class="tab-option active" data-tab="none">
+                        <div class="tab-preview">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="tab-name">None</div>
+                    </div>
+                    
+                    <div class="tab-option" data-tab="google-classroom">
+                        <div class="tab-preview">
+                            <i class="fas fa-chalkboard"></i>
+                        </div>
+                        <div class="tab-name">Google Classroom</div>
+                    </div>
+                    
+                    <div class="tab-option" data-tab="canvas">
+                        <div class="tab-preview">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="tab-name">Canvas</div>
+                    </div>
+                    
+                    <div class="tab-option" data-tab="duolingo">
+                        <div class="tab-preview">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <div class="tab-name">Duolingo</div>
+                    </div>
+                    
+                    <div class="tab-option" data-tab="khan-academy">
+                        <div class="tab-preview">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="tab-name">Khan Academy</div>
+                    </div>
+                    
+                    <div class="tab-option" data-tab="quizlet">
+                        <div class="tab-preview">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="tab-name">Quizlet</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Settings -->
+            <div class="settings-card">
+                <h3>Additional Settings</h3>
+                <p>Fine-tune your experience with these additional settings.</p>
+                
+                <div class="setting-row">
+                    <div class="setting-label">Animation Speed</div>
+                    <div class="setting-control">
+                        <input type="range" min="0.5" max="2" step="0.1" value="1" class="range-slider" id="animationSpeedSlider">
+                        <span class="range-value" id="animationSpeedValue">1x</span>
+                    </div>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">Sound Effects</div>
+                    <div class="setting-control">
+                        <label class="switch">
+                            <input type="checkbox" id="soundToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">Notifications</div>
+                    <div class="setting-control">
+                        <label class="switch">
+                            <input type="checkbox" id="notificationsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">Particle Density</div>
+                    <div class="setting-control">
+                        <input type="range" min="0.5" max="2" step="0.1" value="1" class="range-slider" id="particleDensitySlider">
+                        <span class="range-value" id="particleDensityValue">1x</span>
+                    </div>
+                </div>
+                
+                <button class="btn" id="resetSettings">Reset All Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link discord"><i class="fab fa-discord"></i></a>
+        </div>
+        <div class="footer-links">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="games.html" class="footer-link">Games</a>
+            <a href="apps.html" class="footer-link">Apps</a>
+            <a href="about.html" class="footer-link">About</a>
+            <a href="contact.html" class="footer-link">Contact</a>
+            <a href="settings.html" class="footer-link">Settings</a>
+            <a href="privacy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms of Service</a>
+        </div>
+        <p>&copy; 2025 LunaX Gaming Portal | All Rights Reserved</p>
+    </footer>
+
+    <div class="notification" id="notification">
+        <h3 class="notification-title">Notification Title</h3>
+        <p class="notification-message" id="notificationMessage">Notification message goes here.</p>
+    </div>
+
+    <script>
+        // Global settings object
+        const LunaXSettings = {
+            theme: 'normal',
+            cursor: 'default',
+            particle: 'matrix',
+            tabCloaking: 'none',
+            animationSpeed: 1,
+            soundEnabled: false,
+            notificationsEnabled: true,
+            particleDensity: 1,
+            
+            // Save all settings to localStorage
+            saveSettings: function() {
+                localStorage.setItem('lunaXSettings', JSON.stringify({
+                    theme: this.theme,
+                    cursor: this.cursor,
+                    particle: this.particle,
+                    tabCloaking: this.tabCloaking,
+                    animationSpeed: this.animationSpeed,
+                    soundEnabled: this.soundEnabled,
+                    notificationsEnabled: this.notificationsEnabled,
+                    particleDensity: this.particleDensity
+                }));
+            },
+            
+            // Load all settings from localStorage
+            loadSettings: function() {
+                const savedSettings = localStorage.getItem('lunaXSettings');
+                if (savedSettings) {
+                    const settings = JSON.parse(savedSettings);
+                    this.theme = settings.theme || 'normal';
+                    this.cursor = settings.cursor || 'default';
+                    this.particle = settings.particle || 'matrix';
+                    this.tabCloaking = settings.tabCloaking || 'none';
+                    this.animationSpeed = settings.animationSpeed || 1;
+                    this.soundEnabled = settings.soundEnabled || false;
+                    this.notificationsEnabled = settings.notificationsEnabled !== undefined ? settings.notificationsEnabled : true;
+                    this.particleDensity = settings.particleDensity || 1;
+                }
+            },
+            
+            // Apply all settings to the UI
+            applySettings: function() {
+                applyTheme(this.theme);
+                applyCursor(this.cursor);
+                applyParticleEffect(this.particle);
+                applyTabCloaking(this.tabCloaking);
+                
+                // Apply additional settings
+                document.getElementById('animationSpeedSlider').value = this.animationSpeed;
+                document.getElementById('animationSpeedValue').textContent = this.animationSpeed + 'x';
+                document.getElementById('soundToggle').checked = this.soundEnabled;
+                document.getElementById('notificationsToggle').checked = this.notificationsEnabled;
+                document.getElementById('particleDensitySlider').value = this.particleDensity;
+                document.getElementById('particleDensityValue').textContent = this.particleDensity + 'x';
+                
+                // Update active options in UI
+                updateActiveOptions();
+            },
+            
+            // Reset all settings to defaults
+            resetSettings: function() {
+                this.theme = 'normal';
+                this.cursor = 'default';
+                this.particle = 'matrix';
+                this.tabCloaking = 'none';
+                this.animationSpeed = 1;
+                this.soundEnabled = false;
+                this.notificationsEnabled = true;
+                this.particleDensity = 1;
+                
+                this.saveSettings();
+                this.applySettings();
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all canvases
+            initMatrixCanvas();
+            initSnowCanvas();
+            initRainCanvas();
+            initSpaceCanvas();
+            
+            // Load saved settings
+            LunaXSettings.loadSettings();
+            LunaXSettings.applySettings();
+            
+            // Theme Option Selection
+            const themeOptions = document.querySelectorAll('.theme-option');
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    themeOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Apply the selected theme
+                    const theme = this.getAttribute('data-theme');
+                    applyTheme(theme);
+                    
+                    // Save theme preference
+                    LunaXSettings.theme = theme;
+                    LunaXSettings.saveSettings();
+                    
+                    showNotification('Theme Applied', `The ${theme} theme has been applied successfully.`);
+                });
+            });
+            
+            // Cursor Option Selection
+            const cursorOptions = document.querySelectorAll('.cursor-option');
+            cursorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    cursorOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Apply the selected cursor
+                    const cursor = this.getAttribute('data-cursor');
+                    applyCursor(cursor);
+                    
+                    // Save cursor preference
+                    LunaXSettings.cursor = cursor;
+                    LunaXSettings.saveSettings();
+                    
+                    showNotification('Cursor Applied', `The ${cursor} cursor has been applied successfully.`);
+                });
+            });
+            
+            // Particle Effect Selection
+            const particleOptions = document.querySelectorAll('.particle-option');
+            particleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    particleOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Apply the selected particle effect
+                    const particle = this.getAttribute('data-particle');
+                    applyParticleEffect(particle);
+                    
+                    // Save particle preference
+                    LunaXSettings.particle = particle;
+                    LunaXSettings.saveSettings();
+                    
+                    showNotification('Background Effect Applied', `The ${particle} effect has been applied successfully.`);
+                });
+            });
+            
+            // Tab Cloaker Option Selection
+            const tabOptions = document.querySelectorAll('.tab-option');
+            tabOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    tabOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Apply the selected tab cloaking
+                    const tab = this.getAttribute('data-tab');
+                    applyTabCloaking(tab);
+                    
+                    // Save tab cloaking preference
+                    LunaXSettings.tabCloaking = tab;
+                    LunaXSettings.saveSettings();
+                    
+                    if (tab === 'none') {
+                        showNotification('Tab Cloaking Disabled', 'Tab cloaking has been disabled.');
+                    } else {
+                        showNotification('Tab Cloaking Applied', `Your tab now appears as ${formatTabName(tab)}.`);
+                    }
+                });
+            });
+            
+            // Animation Speed Slider
+            const animationSpeedSlider = document.getElementById('animationSpeedSlider');
+            const animationSpeedValue = document.getElementById('animationSpeedValue');
+            
+            animationSpeedSlider.addEventListener('input', function() {
+                const speed = parseFloat(this.value);
+                animationSpeedValue.textContent = speed.toFixed(1) + 'x';
+                
+                // Save animation speed preference
+                LunaXSettings.animationSpeed = speed;
+                LunaXSettings.saveSettings();
+                
+                // Apply animation speed
+                applyAnimationSpeed(speed);
+            });
+            
+            // Particle Density Slider
+            const particleDensitySlider = document.getElementById('particleDensitySlider');
+            const particleDensityValue = document.getElementById('particleDensityValue');
+            
+            particleDensitySlider.addEventListener('input', function() {
+                const density = parseFloat(this.value);
+                particleDensityValue.textContent = density.toFixed(1) + 'x';
+                
+                // Save particle density preference
+                LunaXSettings.particleDensity = density;
+                LunaXSettings.saveSettings();
+                
+                // Apply particle density
+                applyParticleDensity(density);
+            });
+            
+            // Sound Toggle
+            const soundToggle = document.getElementById('soundToggle');
+            
+            soundToggle.addEventListener('change', function() {
+                // Save sound preference
+                LunaXSettings.soundEnabled = this.checked;
+                LunaXSettings.saveSettings();
+                
+                // Apply sound setting
+                applySoundSetting(this.checked);
+                
+                if (this.checked) {
+                    showNotification('Sound Effects Enabled', 'Sound effects have been enabled.');
+                    playSound('toggle');
+                } else {
+                    showNotification('Sound Effects Disabled', 'Sound effects have been disabled.');
+                }
+            });
+            
+            // Notifications Toggle
+            const notificationsToggle = document.getElementById('notificationsToggle');
+            
+            notificationsToggle.addEventListener('change', function() {
+                // Save notifications preference
+                LunaXSettings.notificationsEnabled = this.checked;
+                LunaXSettings.saveSettings();
+                
+                if (this.checked) {
+                    showNotification('Notifications Enabled', 'Notifications have been enabled.');
+                } else {
+                    showNotification('Notifications Disabled', 'This is the last notification you will see.');
+                }
+            });
+            
+            // Reset Settings Button
+            const resetSettingsBtn = document.getElementById('resetSettings');
+            
+            resetSettingsBtn.addEventListener('click', function() {
+                LunaXSettings.resetSettings();
+                showNotification('Settings Reset', 'All settings have been reset to default values.');
+                if (LunaXSettings.soundEnabled) {
+                    playSound('reset');
+                }
+            });
+            
+            // Theme Switch
+            const themeSwitch = document.getElementById('themeSwitch');
+            const themeIcon = themeSwitch.querySelector('i');
+            
+            themeSwitch.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                let newTheme;
+                
+                if (currentTheme === 'white' || currentTheme === 'light-blue' || currentTheme === 'pink') {
+                    newTheme = 'normal';
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                } else {
+                    newTheme = 'white';
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                }
+                
+                // Apply the new theme
+                applyTheme(newTheme);
+                
+                // Update active theme option
+                themeOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.getAttribute('data-theme') === newTheme) {
+                        option.classList.add('active');
+                    }
+                });
+                
+                // Save theme preference
+                LunaXSettings.theme = newTheme;
+                LunaXSettings.saveSettings();
+                
+                if (LunaXSettings.soundEnabled) {
+                    playSound('switch');
+                }
+            });
+            
+            // Initialize cursor trail
+            initCursorTrail();
+        });
+
+        // Update active options in UI
+        function updateActiveOptions() {
+            // Update theme options
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-theme') === LunaXSettings.theme) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Update cursor options
+            document.querySelectorAll('.cursor-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-cursor') === LunaXSettings.cursor) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Update particle options
+            document.querySelectorAll('.particle-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-particle') === LunaXSettings.particle) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Update tab options
+            document.querySelectorAll('.tab-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-tab') === LunaXSettings.tabCloaking) {
+                    option.classList.add('active');
+                }
+            });
+        }
+
+        // Apply Theme
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            
+            // Update theme switch icon
+            const themeIcon = document.querySelector('.theme-switch i');
+            if (theme === 'white' || theme === 'light-blue' || theme === 'pink') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        }
+
+        // Apply Cursor
+        function applyCursor(cursor) {
+            // Remove all cursor classes
+            document.body.classList.remove('cursor-default', 'cursor-y2k', 'cursor-glove', 'cursor-star');
+            
+            // Add the selected cursor class
+            document.body.classList.add(`cursor-${cursor}`);
+            
+            // Update cursor trail color
+            updateCursorTrailColor(cursor);
+        }
+
+        // Apply Particle Effect
+        function applyParticleEffect(effect) {
+            // Hide all canvases
+            document.getElementById('matrix').classList.remove('active');
+            document.getElementById('snow').classList.remove('active');
+            document.getElementById('rain').classList.remove('active');
+            document.getElementById('space').classList.remove('active');
+            
+            // Show selected canvas
+            if (effect !== 'none') {
+                document.getElementById(effect).classList.add('active');
+            }
+        }
+
+        // Apply Tab Cloaking
+        function applyTabCloaking(tab) {
+            const favicon = document.querySelector('link[rel="icon"]') || document.createElement('link');
+            favicon.type = 'image/x-icon';
+            favicon.rel = 'icon';
+            
+            if (tab === 'none') {
+                document.title = 'LunaX - Settings';
+                favicon.href = 'favicon.ico'; // Default favicon
+            } else {
+                document.title = getTabTitle(tab);
+                favicon.href = getTabFavicon(tab);
+            }
+            
+            // Add favicon to head if it doesn't exist
+            if (!document.querySelector('link[rel="icon"]')) {
+                document.head.appendChild(favicon);
+            }
+        }
+
+        // Apply Animation Speed
+        function applyAnimationSpeed(speed) {
+            document.documentElement.style.setProperty('--animation-speed', speed);
+            
+            // Adjust animation durations for background effects
+            const animations = document.querySelectorAll('style');
+            animations.forEach(style => {
+                const cssText = style.textContent;
+                if (cssText.includes('@keyframes')) {
+                    // This is a simplified approach - in a real implementation,
+                    // you would need to parse and modify the CSS more carefully
+                    console.log('Animation speed adjusted to: ' + speed);
+                }
+            });
+        }
+
+        // Apply Particle Density
+        function applyParticleDensity(density) {
+            // This would adjust the number of particles in each effect
+            // For demonstration, we'll just log it
+            console.log('Particle density adjusted to: ' + density);
+            
+            // In a real implementation, you would reinitialize the particle effects
+            // with the new density value
+        }
+
+        // Apply Sound Setting
+        function applySoundSetting(enabled) {
+            // This would enable or disable sound effects
+            console.log('Sound effects ' + (enabled ? 'enabled' : 'disabled'));
+        }
+
+        // Play Sound Effect
+        function playSound(soundName) {
+            if (!LunaXSettings.soundEnabled) return;
+            
+            // In a real implementation, you would play actual sound files
+            console.log('Playing sound: ' + soundName);
+        }
+
+        // Get Tab Title
+        function getTabTitle(tab) {
+            const titles = {
+                'google-classroom': 'Google Classroom',
+                'canvas': 'Dashboard | Canvas',
+                'duolingo': 'Duolingo - Learn a Language for Free',
+                'khan-academy': 'Khan Academy | Free Online Courses',
+                'quizlet': 'Quizlet: Learning tools & flashcards'
+            };
+            
+            return titles[tab] || 'LunaX - Settings';
+        }
+
+        // Get Tab Favicon
+        function getTabFavicon(tab) {
+            const favicons = {
+                'google-classroom': 'https://ssl.gstatic.com/classroom/favicon.png',
+                'canvas': 'https://canvas.instructure.com/favicon.ico',
+                'duolingo': 'https://d35aaqx5ub95lt.cloudfront.net/favicon.ico',
+                'khan-academy': 'https://www.khanacademy.org/favicon.ico',
+                'quizlet': 'https://assets.quizlet.com/a/j/dist/app/i/logo/q-twilight.458e6e18b4a3d7a.png'
+            };
+            
+            return favicons[tab] || 'favicon.ico';
+        }
+
+        // Format Tab Name for display
+        function formatTabName(tab) {
+            const names = {
+                'google-classroom': 'Google Classroom',
+                'canvas': 'Canvas',
+                'duolingo': 'Duolingo',
+                'khan-academy': 'Khan Academy',
+                'quizlet': 'Quizlet'
+            };
+            
+            return names[tab] || tab;
+        }
+
+        // Show Notification
+        function showNotification(title, message) {
+            if (!LunaXSettings.notificationsEnabled) return;
+            
+            const notification = document.getElementById('notification');
+            const notificationTitle = notification.querySelector('.notification-title');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+            
+            if (LunaXSettings.soundEnabled) {
+                playSound('notification');
+            }
+        }
+
+        // Initialize Cursor Trail
+        function initCursorTrail() {
+            document.addEventListener('mousemove', function(e) {
+                const cursor = LunaXSettings.cursor;
+                if (cursor === 'default') return; // No trail for default cursor
+                
+                createCursorTrail(e.clientX, e.clientY, cursor);
+            });
+        }
+
+        // Create Cursor Trail
+        function createCursorTrail(x, y, cursorType) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            
+            // Set color based on cursor type
+            trail.style.backgroundColor = getCursorTrailColor(cursorType);
+            
+            document.body.appendChild(trail);
+            
+            // Animate and remove
+            setTimeout(() => {
+                trail.style.width = '5px';
+                trail.style.height = '5px';
+                trail.style.opacity = '0';
+            }, 10);
+            
+            setTimeout(() => {
+                trail.remove();
+            }, 500);
+        }
+
+        // Get Cursor Trail Color
+        function getCursorTrailColor(cursorType) {
+            const colors = {
+                'default': 'rgba(255, 255, 255, 0.7)',
+                'y2k': 'rgba(255, 102, 255, 0.7)',
+                'glove': 'rgba(255, 255, 255, 0.7)',
+                'star': 'rgba(0, 0, 0, 0.7)'
+            };
+            
+            return colors[cursorType] || 'rgba(255, 255, 255, 0.7)';
+        }
+
+        // Update Cursor Trail Color
+        function updateCursorTrailColor(cursorType) {
+            const trails = document.querySelectorAll('.cursor-trail');
+            const color = getCursorTrailColor(cursorType);
+            
+            trails.forEach(trail => {
+                trail.style.backgroundColor = color;
+            });
+        }
+
+        // Initialize Matrix Canvas
+        function initMatrixCanvas() {
+            const canvas = document.getElementById('matrix');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Custom text to use instead of random characters
+            const customText = "LUNAX";
+            let customTextIndex = 0;
+            
+            const columns = Math.floor(canvas.width / 20); // Adjust for character width
+            const drops = [];
+            
+            // Initialize drops
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.floor(Math.random() * -canvas.height);
+            }
+            
+            function draw() {
+                // Semi-transparent black to create fade effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#888'; // Grey color for LUNAX text
+                ctx.font = '15px Inter';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    // Get the next character from customText
+                    const text = customText[customTextIndex];
+                    customTextIndex = (customTextIndex + 1) % customText.length;
+                    
+                    // Draw the character
+                    ctx.fillText(text, i * 20, drops[i] * 20);
+                    
+                    // Reset drop position if it's at the bottom or randomly
+                    if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    // Move drop down
+                    drops[i]++;
+                }
+            }
+            
+            // Resize canvas when window is resized
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+            
+            // Run the animation
+            window.matrixInterval = setInterval(draw, 50);
+        }
+
+        // Initialize Snow Canvas
+        function initSnowCanvas() {
+            const canvas = document.getElementById('snow');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Snowflake particles
+            const particles = [];
+            const particleCount = 100;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 4 + 1,
+                    density: Math.random() * 10 + 1,
+                    opacity: Math.random() * 0.5 + 0.3
+                });
+            }
+            
+            function drawSnow() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const p = particles[i];
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                    ctx.fill();
+                    
+                    // Move particles
+                    p.y += p.density / 3;
+                    
+                    // Slight horizontal movement
+                    p.x += Math.sin(p.y / 30) / 2;
+                    
+                    // Reset particles that go off screen
+                    if (p.y > canvas.height) {
+                        particles[i] = {
+                            x: Math.random() * canvas.width,
+                            y: -10,
+                            radius: p.radius,
+                            density: p.density,
+                            opacity: p.opacity
+                        };
+                    }
+                }
+            }
+            
+            // Resize canvas when window is resized
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+            
+            // Store interval ID for later use
+            window.snowInterval = setInterval(drawSnow, 30);
+        }
+
+        // Initialize Rain Canvas
+        function initRainCanvas() {
+            const canvas = document.getElementById('rain');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Rain drops
+            const raindrops = [];
+            const raindropCount = 200;
+            
+            for (let i = 0; i < raindropCount; i++) {
+                raindrops.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    length: Math.random() * 20 + 10,
+                    speed: Math.random() * 15 + 10,
+                    opacity: Math.random() * 0.5 + 0.3
+                });
+            }
+            
+            function drawRain() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < raindropCount; i++) {
+                    const drop = raindrops[i];
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(drop.x, drop.y);
+                    ctx.lineTo(drop.x, drop.y + drop.length);
+                    ctx.strokeStyle = `rgba(174, 194, 224, ${drop.opacity})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    
+                    // Move raindrops
+                    drop.y += drop.speed;
+                    
+                    // Reset raindrops that go off screen
+                    if (drop.y > canvas.height) {
+                        raindrops[i] = {
+                            x: Math.random() * canvas.width,
+                            y: -100,
+                            length: drop.length,
+                            speed: drop.speed,
+                            opacity: drop.opacity
+                        };
+                    }
+                }
+            }
+            
+            // Resize canvas when window is resized
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+            
+            // Store interval ID for later use
+            window.rainInterval = setInterval(drawRain, 30);
+        }
+
+        // Initialize Space Canvas
+        function initSpaceCanvas() {
+            const canvas = document.getElementById('space');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Stars
+            const stars = [];
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2 + 0.5,
+                    opacity: Math.random() * 0.5 + 0.3,
+                    twinkleSpeed: Math.random() * 0.05 + 0.01,
+                    twinkleDirection: Math.random() > 0.5 ? 1 : -1
+                });
+            }
+            
+            function drawSpace() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = stars[i];
+                    
+                    // Twinkle effect
+                    star.opacity += star.twinkleSpeed * star.twinkleDirection;
+                    
+                    if (star.opacity > 0.8 || star.opacity < 0.3) {
+                        star.twinkleDirection *= -1;
+                    }
+                    
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                    ctx.fill();
+                }
+            }
+            
+            // Resize canvas when window is resized
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+            
+            // Store interval ID for later use
+            window.spaceInterval = setInterval(drawSpace, 50);
+        }
+    </script>
+</body>
+</html>
