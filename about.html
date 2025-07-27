@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LunaX - About</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Same CSS as index.html */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            /* Dark Theme Variables (Default) */
+            --bg-primary: #121212;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-tertiary: #999999;
+            --accent-primary: #00c6ff;
+            --accent-secondary: #0072ff;
+            --border-color: #333333;
+            --card-bg: rgba(30, 30, 30, 0.8);
+            --modal-bg: rgba(25, 25, 25, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --header-bg: rgba(18, 18, 18, 0.9);
+            --sidebar-bg: #1a1a1a;
+            --matrix-opacity: 0.15;
+        }
+
+        [data-theme="light"] {
+            /* Light Theme Variables */
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #e5e5e5;
+            --bg-tertiary: #d5d5d5;
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --text-tertiary: #777777;
+            --accent-primary: #0072ff;
+            --accent-secondary: #00c6ff;
+            --border-color: #cccccc;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --modal-bg: rgba(245, 245, 245, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --header-bg: rgba(245, 245, 245, 0.9);
+            --sidebar-bg: #e5e5e5;
+            --matrix-opacity: 0.05;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-tertiary), var(--bg-secondary));
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            line-height: 1.6;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            letter-spacing: 0.02em;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: var(--matrix-opacity);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 60px;
+            background-color: #1a1a1a;
+            border-right: 1px solid #333;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .sidebar-btn {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: transparent;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-btn:hover::before {
+            left: 0;
+        }
+
+        .sidebar-btn:hover {
+            background-color: #333;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-btn.active {
+            background-color: #333;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            margin-left: 0;
+            padding-left: 60px;
+            animation: fadeInDown 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(to bottom, #fff 20%, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            transition: width 0.5s ease;
+            animation: logoUnderline 1.5s ease forwards 0.5s;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes logoUnderline {
+            to {
+                width: 80%;
+            }
+        }
+        
+        .logo::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.3;
+            background: linear-gradient(to bottom, #fff, transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: calc(100% - 60px);
+            padding-left: 60px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .about-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            animation: cardAppear 0.6s ease both;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .about-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .about-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background-color: rgba(30, 30, 30, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-primary);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            border: 3px solid var(--accent-primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .team-role {
+            font-size: 1rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .team-bio {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .team-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-social a:hover {
+            background-color: var(--accent-primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer {
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 500;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+            padding-left: 60px;
+            border-top: 1px solid #333;
+            color: #777;
+            animation: fadeIn 1s ease 1s both;
+        }
+
+        /* Footer Links */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: #aaa;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Social Media */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            color: #fff;
+        }
+
+        .social-link.twitter:hover {
+            background-color: #1da1f2;
+            border-color: #1da1f2;
+        }
+
+        .social-link.facebook:hover {
+            background-color: #1877f2;
+            border-color: #1877f2;
+        }
+
+        .social-link.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-color: #bc1888;
+        }
+
+        .social-link.discord:hover {
+            background-color: #5865f2;
+            border-color: #5865f2;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 50px;
+            }
+            
+            .header {
+                padding-left: 50px;
+            }
+            
+            .container {
+                padding-left: 50px;
+                width: calc(100% - 50px);
+            }
+            
+            .footer {
+                padding-left: 50px;
+            }
+            
+            .logo { 
+                font-size: 3rem; 
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                bottom: 0;
+                top: auto;
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                padding: 0 1rem;
+                justify-content: space-around;
+                z-index: 1000;
+            }
+            
+            .sidebar-nav {
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0.5rem 0;
+                gap: 0;
+                width: 100%;
+            }
+            
+            .header {
+                padding-left: 0;
+                margin-bottom: 0;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                width: 100%;
+                margin-bottom: 70px;
+            }
+            
+            .footer {
+                padding-left: 0;
+                margin-bottom: 70px;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .about-section {
+                padding: 1.5rem;
+            }
+            
+            .about-section h2 {
+                font-size: 1.8rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    <div class="code-lines"></div>
+    <div class="grid-overlay"></div>
+    <div class="scanlines"></div>
+    <div class="noise-overlay"></div>
+    <div class="circuit-pattern left-circuit"></div>
+    <div class="circuit-pattern right-circuit"></div>
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent top-right"></div>
+    <div class="corner-accent bottom-left"></div>
+    <div class="corner-accent bottom-right"></div>
+    
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <button class="sidebar-btn" onclick="window.location.href='index.html'" title="Home">
+                <i class="fas fa-home"></i>
+            </button>
+            <button class="sidebar-btn" onclick="window.location.href='games.html'" title="Games">
+                <i class="fas fa-gamepad"></i>
+            </button>
+            <button class="sidebar-btn" onclick="window.location.href='apps.html'" title="Apps">
+                <i class="fas fa-mobile-alt"></i>
+            </button>
+            <button class="sidebar-btn active" onclick="window.location.href='about.html'" title="About">
+                <i class="fas fa-info-circle"></i>
+            </button>
+            <button class="sidebar-btn" onclick="window.location.href='contact.html'" title="Contact">
+                <i class="fas fa-envelope"></i>
+            </button>
+        </nav>
+    </div>
+
+    <header class="header">
+        <h1 class="logo" data-text="About">About</h1>
+    </header>
+
+    <div class="container">
+        <div class="about-section">
+            <h2>Our Story</h2>
+            <p>LunaX was founded in 2023 by a team of passionate gamers and developers who wanted to create a platform where users could access their favorite games without restrictions. What started as a small project has grown into a comprehensive gaming portal with a vision to expand into mobile applications and virtual reality experiences.</p>
+            
+            <p>Our mission is to provide a secure, accessible, and enjoyable gaming experience for everyone, regardless of location or device. We believe that gaming should be available to all, and we're committed to breaking down barriers that prevent people from enjoying quality games.</p>
+            
+            <h2>What We Offer</h2>
+            <p>At LunaX, we provide a carefully curated collection of games across various genres - from classic arcade titles to modern puzzle games and action adventures. Our platform is designed with user experience in mind, featuring a sleek interface, responsive design, and seamless gameplay.</p>
+            
+            <p>We're constantly expanding our library with new games and planning exciting features for the future, including mobile apps, VR experiences, and a game creation studio that will allow users to build and share their own games.</p>
+            
+            <h2>Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Alex Chen">
+                    </div>
+                    <h3 class="team-name">Alex Chen</h3>
+                    <p class="team-role">Lead Developer</p>
+                    <p class="team-bio">Alex is a full-stack developer with over 10 years of experience in web and game development. He leads our technical team and oversees the platform architecture.</p>
+                    <div class="team-social">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Sarah Johnson">
+                    </div>
+                    <h3 class="team-name">Sarah Johnson</h3>
+                    <p class="team-role">UI/UX Designer</p>
+                    <p class="team-bio">Sarah brings her creative vision to LunaX, designing intuitive interfaces and engaging user experiences that make our platform stand out.</p>
+                    <div class="team-social">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                        <a href="#"><i class="fab fa-behance"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Marcus Lee">
+                    </div>
+                    <h3 class="team-name">Marcus Lee</h3>
+                    <p class="team-role">Game Developer</p>
+                    <p class="team-bio">Marcus specializes in game development and optimization. He ensures that all games on our platform run smoothly and provide an excellent gaming experience.</p>
+                    <div class="team-social">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-steam"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Priya Patel">
+                    </div>
+                    <h3 class="team-name">Priya Patel</h3>
+                    <p class="team-role">Backend Engineer</p>
+                    <p class="team-bio">Priya manages our server infrastructure and database systems, ensuring that LunaX remains fast, secure, and reliable for all users.</p>
+                    <div class="team-social">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link discord"><i class="fab fa-discord"></i></a>
+        </div>
+        <div class="footer-links">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="games.html" class="footer-link">Games</a>
+            <a href="apps.html" class="footer-link">Apps</a>
+            <a href="about.html" class="footer-link">About</a>
+            <a href="contact.html" class="footer-link">Contact</a>
+            <a href="privacy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms of Service</a>
+        </div>
+        <p>© 2025 LunaX Gaming Portal | All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // Matrix Background Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('matrix');
+            const ctx = canvas.getContext('2d');
+            
+            let width, height;
+            
+            function setupCanvas() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, width, height);
+            }
+            
+            setupCanvas();
+            
+            const columns = Math.floor(width / 20);
+            const drops = [];
+            
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$+-*/=%"\'#&_(),.;:?!\\|{}<>[]^~';
+            
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, width, height);
+                
+                ctx.fillStyle = '#0f0';
+                ctx.font = '15px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                    ctx.fillText(text, i * 20, drops[i] * 20);
+                    
+                    if (drops[i] * 20 > height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    drops[i]++;
+                }
+            }
+            
+            function animateMatrix() {
+                drawMatrix();
+                requestAnimationFrame(animateMatrix);
+            }
+            
+            animateMatrix();
+            
+            window.addEventListener('resize', function() {
+                setupCanvas();
+            });
+        });
+    </script>
+</body>
+</html>
